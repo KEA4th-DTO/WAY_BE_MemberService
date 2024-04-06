@@ -17,19 +17,15 @@
     <hr class="my-4">
 
     <div class="row">
+
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg" type="button"
-                    th:onclick="|location.href='@{/items}'|">
-                상품 관리
-            </button>
-        </div>
-        <div class="col">
-            <form th:action="@{/logout}" method="post">
+            <form th:action="@{/}" method="post">
                 <button class="w-100 btn btn-dark btn-lg" onclick="location.href='items.html'" type="submit">
                     로그아웃
                 </button>
             </form>
         </div>
+
     </div>
 
     <hr class="my-4">
