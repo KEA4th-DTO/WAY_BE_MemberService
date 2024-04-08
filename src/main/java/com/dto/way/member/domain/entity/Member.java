@@ -1,9 +1,6 @@
 package com.dto.way.member.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,22 +10,20 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Member {
-
-    // pk, name, email, password, introduce, profile_image_url, birth, status, login_type, auth, nickname, created_at, updated_at
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @NonNull
+    @Column(nullable = false)
     private String name;
 
-    @NonNull
+    @Column(nullable = false)
     private String email;
 
-    @NonNull
+    @Column(nullable = false)
     private String password;
 
     private String introduce;
@@ -41,10 +36,10 @@ public class Member {
 
     private LoginType loginType;
 
-    @NonNull
+    @Column(nullable = false)
     private MemberAuth memberAuth;
 
-    @NonNull
+    @Column(nullable = false)
     private String nickname;
 
     private LocalDateTime createdAt;
