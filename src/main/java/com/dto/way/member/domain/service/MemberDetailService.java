@@ -3,7 +3,6 @@ package com.dto.way.member.domain.service;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,16 +1,20 @@
 package com.dto.way.member.web.controller;
 
 import com.dto.way.member.domain.service.MemberService;
+import com.dto.way.member.web.dto.JwtToken;
 import com.dto.way.member.web.response.ApiResponse;
 import com.dto.way.member.web.response.code.status.ErrorStatus;
 import com.dto.way.member.web.response.code.status.SuccessStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.dto.way.member.web.dto.MemberRequestDto.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MemberRestController {
@@ -26,8 +30,6 @@ public class MemberRestController {
             return ApiResponse.onFailure(ErrorStatus.MEMBER_NICKNAME_DUPLICATED.getCode(),"회원가입 실패", createMemberRequestDto);
         }
     }
-<<<<<<< Updated upstream
-=======
 
     @PostMapping("/login")
     public JwtToken login(@RequestBody LoginMemberDto loginMemberDto) {
@@ -46,5 +48,5 @@ public class MemberRestController {
     public String testJwtToken() {
         return "JWT TOKEN 성공!!!";
     }
->>>>>>> Stashed changes
+
 }
