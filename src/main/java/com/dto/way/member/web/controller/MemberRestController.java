@@ -44,8 +44,9 @@ public class MemberRestController {
         return jwtToken;
     }
 
-    @GetMapping("/testJwtToken")
+    @PostMapping("/testJwtToken")
     public String testJwtToken() {
         return "JWT TOKEN 성공!!!";
     }
+
 }

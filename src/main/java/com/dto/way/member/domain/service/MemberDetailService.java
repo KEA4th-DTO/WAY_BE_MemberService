@@ -9,6 +9,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service("userDetailsService")
 @RequiredArgsConstructor
 public class MemberDetailService implements UserDetailsService {
@@ -26,6 +30,7 @@ public class MemberDetailService implements UserDetailsService {
         return User.builder()
                 .username(member.getEmail())
                 .password(member.getPassword())
+                .roles(member.getRoles().toArray(new String[0]))
                 .build();
     }
 
