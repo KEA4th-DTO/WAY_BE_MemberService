@@ -26,4 +26,25 @@ public class MemberRestController {
             return ApiResponse.onFailure(ErrorStatus.MEMBER_NICKNAME_DUPLICATED.getCode(),"회원가입 실패", createMemberRequestDto);
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    @PostMapping("/login")
+    public JwtToken login(@RequestBody LoginMemberDto loginMemberDto) {
+
+        JwtToken jwtToken = memberService.login(loginMemberDto);
+        log.info("==========USER INFO==========");
+        log.info("email = {} ", loginMemberDto.getEmail());
+        log.info("==========JWT TOKEN==========");
+        log.info("Access Token = {} ", jwtToken.getAccessToken());
+        log.info("Refresh Token = {} ", jwtToken.getRefreshToken());
+
+        return jwtToken;
+    }
+
+    @PostMapping("/testJwtToken")
+    public String testJwtToken() {
+        return "JWT TOKEN 성공!!!";
+    }
+>>>>>>> Stashed changes
 }
