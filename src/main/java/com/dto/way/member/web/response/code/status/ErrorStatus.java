@@ -21,6 +21,7 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_NICKNAME_DUPLICATED(HttpStatus.BAD_REQUEST, "MEMBER4002", "중복된 닉네임 입니다."),
     MEMBER_PASSWORD_NOT_VALID(HttpStatus.BAD_REQUEST, "MEMBER4003", "유효한 비밀번호가 아닙니다."),
     MEMBER_PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST, "MEMBER4004", "비밀번호가 일치하지 않습니다."),
+    MEMBER_EMAIL_DUPLICATED(HttpStatus.BAD_REQUEST, "MEMBER4005", "해당 이메일로 가입한 계정이 존재합니다."),
 
     ;
 

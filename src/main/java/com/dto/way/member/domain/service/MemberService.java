@@ -18,6 +18,9 @@ import java.util.Optional;
 
 import static com.dto.way.member.domain.entity.MemberAuth.*;
 import static com.dto.way.member.web.dto.MemberRequestDto.*;
+import static com.dto.way.member.web.response.code.status.ErrorStatus.*;
+import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
+
 
 @Slf4j
 @Service
@@ -30,13 +33,25 @@ public class MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisService redisService;
 
-    public boolean createMember(CreateMemberRequestDto createMemberRequestDto) {
+    public String createMember(CreateMemberRequestDto createMemberRequestDto) {
 
-        if (isEqualPassword(createMemberRequestDto)) return false;
+        // 비밀번호 일치 검사
+        if (!checkEqualPassword(createMemberRequestDto)) {
+
+            return MEMBER_PASSWORD_NOT_MATCHED.getCode();
+        }
 
         // 이메일 중복 검사
+        if (!checkEmailDuplication(createMemberRequestDto)) {
+
+            return MEMBER_EMAIL_DUPLICATED.getCode();
+        }
 
         // 닉네임 중복 검사
+        if (!checkNicknameDuplication(createMemberRequestDto)) {
+
+            return MEMBER_NICKNAME_DUPLICATED.getCode();
+        }
 
         String password = passwordEncoder.encode(createMemberRequestDto.getPassword());
 
@@ -51,7 +66,7 @@ public class MemberService {
 
         memberRepository.save(member);
 
-        return true;
+        return MEMBER_SIGNUP.getCode();
 
     }
 
@@ -103,11 +118,29 @@ public class MemberService {
 
 
     // 비밀번호와 비밀번화 확인이 같은지 체크하는 메소드
-    private static boolean isEqualPassword(CreateMemberRequestDto createMemberRequestDto) {
-        if (!createMemberRequestDto.getPassword().equals(createMemberRequestDto.getPasswordCheck())) {
-            return true;
+    private boolean checkEqualPassword(CreateMemberRequestDto createMemberRequestDto) {
+        if (createMemberRequestDto.getPassword().equals(createMemberRequestDto.getPasswordCheck())) {
+            return true; // 일치하는 경우
         }
-        return false;
+        return false; // 일치하지 않는 경우
+    }
+
+    // 닉네임 중복 검사 메소드
+    private boolean checkNicknameDuplication(CreateMemberRequestDto createMemberRequestDto) {
+        boolean checked = memberRepository.existsByNickname(createMemberRequestDto.getNickname());
+        if (checked) { // 중복이라면
+            return false;
+        }
+        return true;
+    }
+
+    // 이메일 중복 검사 메소드
+    private boolean checkEmailDuplication(CreateMemberRequestDto createMemberRequestDto) {
+        boolean checked = memberRepository.existsByEmail(createMemberRequestDto.getEmail());
+        if (checked) {
+            return false;
+        }
+        return true;
     }
 
     private void saveRefreshToken(String refreshToken, Authentication authentication, Duration duration) {
