@@ -1,0 +1,4 @@
+## DB keys
+#POSTGRESQL_DB_HOST: jdbc:mysql://localhost:3306/way_member
+#POSTGRESQL_DB_USER: shc3113
+#POSTGRESQL_DB_PASSWORD: 0000

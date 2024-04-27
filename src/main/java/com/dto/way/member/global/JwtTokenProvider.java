@@ -1,10 +1,12 @@
 package com.dto.way.member.global;
 
+import com.dto.way.member.domain.service.RedisService;
 import com.dto.way.member.web.dto.JwtToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -25,6 +28,9 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     private final Key key;
+
+    @Autowired
+    private RedisService redisService;
 
     // application.yml에서 secret 값 가져와서 key에 저장
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -43,8 +49,11 @@ public class JwtTokenProvider {
 
         long now = (new Date()).getTime();
 
+
+        log.info("authentication.getName() = {}", authentication.getName());
+
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        Date accessTokenExpiresIn = new Date(now + 60000);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -67,8 +76,8 @@ public class JwtTokenProvider {
 
     // Jwt 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
     public Authentication getAuthentication(String accessToken) {
-        // Jwt 토큰 복호화
         Claims claims = parseClaims(accessToken);
+        // Jwt 토큰 복호화
 
         if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
@@ -89,25 +98,27 @@ public class JwtTokenProvider {
     }
 
     // 토큰 정보를 검증하는 메서드
-    public boolean validateToken(String token) {
+    public JwtTokenValidationResult validateToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-            return true;
+            return new JwtTokenValidationResult(true, "Valid JWT Token"); // 토큰 유효성 검사 성공
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
+            return new JwtTokenValidationResult(false, "Invalid JWT Token");
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
+            return new JwtTokenValidationResult(false, "Expired JWT Token");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
+            return new JwtTokenValidationResult(false, "Unsupported JWT Token");
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
+            return new JwtTokenValidationResult(false, "JWT claims string is empty.");
         }
-        return false;
     }
-
 
     // accessToken
     private Claims parseClaims(String accessToken) {
