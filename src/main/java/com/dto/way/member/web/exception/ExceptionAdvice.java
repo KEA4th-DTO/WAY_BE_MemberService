@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,10 +18,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.validation.FieldError;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
@@ -36,24 +39,16 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
                 HttpHeaders.EMPTY, request);
     }
 
-    public ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException e, HttpHeaders headers, HttpStatus status,
-            WebRequest request) {
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        List<String> errorMessages = ex.getBindingResult().getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.toList());
 
-        Map<String, String> errors = new LinkedHashMap<>();
+        String combinedErrorMessage = String.join("\n", errorMessages);
 
-        e.getBindingResult().getFieldErrors()
-                .forEach(fieldError -> {
-                    String fieldName = fieldError.getField();
-                    String errorMessage = Optional.ofNullable(fieldError.getDefaultMessage())
-                            .orElse("");
-                    errors.merge(fieldName, errorMessage,
-                            (existingErrorMessage, newErrorMessage) -> existingErrorMessage + ", "
-                                    + newErrorMessage);
-                });
-
-        return handleExceptionInternalArgs(e, HttpHeaders.EMPTY,
-                ErrorStatus.valueOf("_BAD_REQUEST"), request, errors);
+        return ResponseEntity.badRequest().body(combinedErrorMessage);
     }
 
     @ExceptionHandler
