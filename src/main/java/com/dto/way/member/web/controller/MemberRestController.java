@@ -46,11 +46,10 @@ public class MemberRestController {
     public ApiResponse<JwtToken> login(@Valid @RequestBody LoginMemberRequestDto loginMemberRequestDto) {
 
         JwtToken jwtToken = memberService.login(loginMemberRequestDto);
-        log.info("==========USER INFO==========");
-        log.info("email = {} ", loginMemberRequestDto.getEmail());
-        log.info("==========JWT TOKEN==========");
-        log.info("Access Token = {} ", jwtToken.getAccessToken());
-        log.info("Refresh Token = {} ", jwtToken.getRefreshToken());
+
+        if (jwtToken.getGrantType().equals(MEMBER_LOGIN_FAILED.getCode())) {
+            return ApiResponse.onFailure(MEMBER_LOGIN_FAILED.getCode(), MEMBER_LOGIN_FAILED.getMessage(), jwtToken);
+        }
         
         return ApiResponse.of(MEMBER_LOGIN, jwtToken);
     }

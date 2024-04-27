@@ -71,6 +71,15 @@ public class MemberService {
     }
 
     public JwtToken login(LoginMemberRequestDto loginMemberRequestDto) {
+        Optional<Member> member = memberRepository.findByEmail(loginMemberRequestDto.getEmail());
+        if (member.isEmpty()) {
+            return new JwtToken(MEMBER_LOGIN_FAILED.getCode(), null, null);
+        } else {
+            if (!member.get().getPassword().equals(loginMemberRequestDto.getPassword())) {
+                return new JwtToken(MEMBER_LOGIN_FAILED.getCode(), null, null);
+            }
+        }
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginMemberRequestDto.getEmail(), loginMemberRequestDto.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
