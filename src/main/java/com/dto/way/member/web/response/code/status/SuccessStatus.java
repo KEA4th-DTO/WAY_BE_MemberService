@@ -20,6 +20,7 @@ public enum SuccessStatus implements BaseCode {
     MEMBER_DELETE(HttpStatus.OK, "MEMBER2004", "회원 탈퇴 성공"),
     MEMBER_SIGNUP(HttpStatus.OK, "MEMBER2005", "회원가입 성공"),
     MEMBER_LOGIN(HttpStatus.OK, "MEMBER2006", "로그인 성공"),
+    MEMBER_LOGOUT(HttpStatus.OK, "MEMBER2007", "로그아웃 성공"),
 
     //  게시글 관련 응답
     DAILY_CREATED(HttpStatus.OK, "DAILY2001", "Daily 게시글이 생성되었습니다."),
