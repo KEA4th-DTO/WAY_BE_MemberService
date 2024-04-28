@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisService redisService;
 
+    @Transactional
     public String createMember(CreateMemberRequestDto createMemberRequestDto) {
 
         // 비밀번호 일치 검사
@@ -156,4 +158,17 @@ public class MemberService {
         log.info("save token");
         redisService.setValues(refreshToken, authentication.getName(), duration);
     }
+
+    @Transactional(readOnly = true)
+    public Member findMemberByEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        return member.orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public Member findMemberByNickname(String nickname) {
+        Optional<Member> member = memberRepository.findByNickname(nickname);
+        return member.orElse(null);
+    }
+
 }

@@ -20,12 +20,13 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "memberId")
+@EqualsAndHashCode(of = "id")
 public class Member implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    @Column(name = "member_id")
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -53,6 +54,12 @@ public class Member implements UserDetails {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "fromMember", fetch = FetchType.LAZY)
+    private List<Follow> followingList;
+
+    @OneToMany(mappedBy = "toMember", fetch = FetchType.LAZY)
+    private List<Follow> followerList;
 
 
     @ElementCollection(fetch = FetchType.EAGER)
