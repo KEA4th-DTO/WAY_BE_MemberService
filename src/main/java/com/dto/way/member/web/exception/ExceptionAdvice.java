@@ -65,6 +65,12 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(apiException, errorReasonHttpStatus, null, request);
     }
 
+    @ExceptionHandler(value = FollowException.class)
+    public ResponseEntity onThrowException(FollowException ex, HttpHeaders headers, HttpStatusCode status, HttpServletRequest request) {
+        ErrorReasonDTO errorReasonHttpStatus = ex.getErrorReasonHttpStatus();
+        return handleExceptionInternal(ex, errorReasonHttpStatus, null, request);
+    }
+
     private ResponseEntity<Object> handleExceptionInternal(Exception e, ErrorReasonDTO reason,
                                                            HttpHeaders headers, HttpServletRequest request) {
 
@@ -122,4 +128,5 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
                 request
         );
     }
+
 }

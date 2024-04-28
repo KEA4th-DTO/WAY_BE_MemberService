@@ -28,6 +28,10 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 이메일 인증 응답
     EMAIL_NOT_VERIFIED(HttpStatus.BAD_REQUEST, "EMAIL4001", "인증번호가 일치하지 않습니다."),
+
+    // 팔로우 응답
+    FOLLOW_CANNOT_SELF(HttpStatus.BAD_REQUEST, "FOLLOW4001", "자기 자신은 팔로잉/팔로우 할 수 없습니다."),
+    FOLLOW_NOT_DUPLICATED(HttpStatus.BAD_REQUEST, "FOLLOW4002", "이미 팔로잉 한 유저 입니다."),
     ;
 
 
