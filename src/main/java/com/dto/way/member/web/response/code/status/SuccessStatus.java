@@ -25,8 +25,16 @@ public enum SuccessStatus implements BaseCode {
     //  게시글 관련 응답
     DAILY_CREATED(HttpStatus.OK, "DAILY2001", "Daily 게시글이 생성되었습니다."),
     DAILY_UPDATED(HttpStatus.OK,"DAILY2002","Daily 게시글이 수정되었습니다."),
-    DAILY_DELETED(HttpStatus.OK,"DAILY2003","Daily 게시글이 삭제되었습니다.")
+    DAILY_DELETED(HttpStatus.OK,"DAILY2003","Daily 게시글이 삭제되었습니다."),
+
+    // 이메일 인증 관련 응답
+    EMAIL_SENDED(HttpStatus.OK, "EMAIL2001", "인증 메일이 전송되었습니다."),
+    EMAIL_VERIFIED(HttpStatus.OK, "EMAIL2002", "이메일 인증이 완료되었습니다."),
+
+
     ;
+
+
 
 
     private final HttpStatus httpStatus;
