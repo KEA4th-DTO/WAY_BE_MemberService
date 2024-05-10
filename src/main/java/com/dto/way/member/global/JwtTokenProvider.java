@@ -29,9 +29,6 @@ public class JwtTokenProvider {
 
     private final Key key;
 
-    @Autowired
-    private RedisService redisService;
-
     // application.yml에서 secret 값 가져와서 key에 저장
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -45,15 +42,14 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        log.info("authorities = {}", authorities);
+        log.info("authentification = {}", authentication);
 
         long now = (new Date()).getTime();
-
 
         log.info("authentication.getName() = {}", authentication.getName());
 
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 60000 * 30); // 30분
+        Date accessTokenExpiresIn = new Date(now + 86400000L * 100); // 30분
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)

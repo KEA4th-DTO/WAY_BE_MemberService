@@ -8,6 +8,8 @@ import com.dto.way.member.web.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,13 +35,8 @@ public class FollowController {
     }
 
     // 로그인 한 사용자가 본인 혹은 다른 사람의 팔로잉 리스트를 보는 API
-<<<<<<< Updated upstream
-    @GetMapping("/{nickname}/followingList")
-    public ApiResponse<List<FollowDto>> getFollowingList(Authentication authentication, @PathVariable("nickname") String nickname) {
-=======
     @GetMapping("/{nickname}/following-list")
     public ApiResponse<List<FollowDTO>> getFollowingList(Authentication authentication, @PathVariable("nickname") String nickname) {
->>>>>>> Stashed changes
         Member from_member = memberService.findMemberByNickname(nickname);
         Member login_member = memberService.findMemberByEmail(authentication.getName());
         List<FollowDTO> followingList = followService.followingList(from_member, login_member);
@@ -47,13 +44,8 @@ public class FollowController {
     }
 
     // 로그인 한 사용자가 본인 혹은 다른 사람의 팔로워 리스트를 보는 API
-<<<<<<< Updated upstream
-    @GetMapping("/{nickname}/followerList")
-    public ApiResponse<List<FollowDto>> getFollowerList(Authentication authentication, @PathVariable("nickname") String nickname) {
-=======
     @GetMapping("/{nickname}/follower-list")
     public ApiResponse<List<FollowDTO>> getFollowerList(Authentication authentication, @PathVariable("nickname") String nickname) {
->>>>>>> Stashed changes
         Member to_member = memberService.findMemberByNickname(nickname);
         Member login_member = memberService.findMemberByEmail(authentication.getName());
         List<FollowDTO> followerList = followService.followerList(to_member, login_member);
@@ -61,8 +53,8 @@ public class FollowController {
     }
 
     // 로그인 한 사용자가 본인의 팔로잉 리스트에서 팔로잉을 삭제하는 API
-    @DeleteMapping("/followingList/{friendNickname}")
-    public ApiResponse deleteFollowing(Authentication authentication, @PathVariable("friendNickname") String nickname) {
+    @DeleteMapping("/following-list/{friendNickname}")
+    public ApiResponse deleteFollowing(@AuthenticationPrincipal UserDetails userDetails, Authentication authentication, @PathVariable("friendNickname") String nickname) {
         Member login_member = memberService.findMemberByEmail(authentication.getName());
         Member to_member = memberService.findMemberByNickname(nickname);
         followService.cancelFollow(login_member, to_member);
@@ -71,7 +63,7 @@ public class FollowController {
     }
 
     // 로그인 한 사용자가 본인의 팔로워 리스트에서 팔로워를 삭제하는 API
-    @DeleteMapping("/followerList/{friendNickname}")
+    @DeleteMapping("/follower-list/{friendNickname}")
     public ApiResponse deleteFollower(Authentication authentication, @PathVariable("friendNickname") String nickname) {
         Member login_member = memberService.findMemberByEmail(authentication.getName());
         Member from_member = memberService.findMemberByNickname(nickname);

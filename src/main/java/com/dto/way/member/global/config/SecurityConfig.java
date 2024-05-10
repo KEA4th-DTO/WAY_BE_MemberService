@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberDetailService memberDetailService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -30,9 +29,10 @@ public class SecurityConfig {
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/member-service/login").permitAll()
-                        .requestMatchers("/member-service/signUp").permitAll()
-                        .requestMatchers("/member-service/recreateToken").permitAll()
+                        .requestMatchers("/member-service/signup").permitAll()
+                        .requestMatchers("/member-service/recreate-token").permitAll()
                         .requestMatchers("/member-service/logout").permitAll()
+                        .requestMatchers("/member-service/test-cloud").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)

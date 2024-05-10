@@ -20,7 +20,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public ApiResponse<CreateMemberRequestDto> signUp(@Valid @RequestBody CreateMemberRequestDto createMemberRequestDto) {
 
         String result = memberService.createMember(createMemberRequestDto);
@@ -61,13 +61,13 @@ public class MemberController {
         return ApiResponse.of(MEMBER_LOGOUT, jwtToken);
     }
 
-    @PostMapping("/testJwtToken")
-    public String testJwtToken() {
+    @GetMapping("/test-cloud")
+    public String testCloud() {
 
-        return "JWT TOKEN 성공!!!";
+        return "ingress - spring boot -db 연결 성공!!";
     }
 
-    @PostMapping("/recreateToken")
+    @PostMapping("/recreate-token")
     public JwtToken recreateToken(@RequestBody JwtToken jwtToken) {
         String refreshToken = jwtToken.getRefreshToken();
         return memberService.checkRefreshTokenisValid(refreshToken);
