@@ -32,7 +32,13 @@ public enum SuccessStatus implements BaseCode {
     EMAIL_VERIFIED(HttpStatus.OK, "EMAIL2002", "이메일 인증이 완료되었습니다."),
 
     // 팔로우 응답
+
+    // 알림 응답
+    NOTIFICATION_SENDED(HttpStatus.OK, "NOTIFICATION2001", "알림이 전송되었습니다."),
+
     ;
+
+
 
 
 

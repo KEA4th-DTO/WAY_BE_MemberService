@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.dto.way.member.domain.entity.MemberAuth.*;
-import static com.dto.way.member.web.dto.MemberRequestDto.*;
+import static com.dto.way.member.web.dto.MemberRequestDTO.*;
 import static com.dto.way.member.web.response.code.status.ErrorStatus.*;
 import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
 

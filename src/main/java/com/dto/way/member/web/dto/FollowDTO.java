@@ -13,6 +13,5 @@ public class FollowDTO {
     private String nickname;
     private String name;
     private String status;
-    private String memberId;
 
 }

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import static com.dto.way.member.web.dto.MemberRequestDto.*;
+import static com.dto.way.member.web.dto.MemberRequestDTO.*;
 import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
 import static com.dto.way.member.web.response.code.status.ErrorStatus.*;
 
@@ -16,7 +16,7 @@ import static com.dto.way.member.web.response.code.status.ErrorStatus.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member-service")
-public class MemberRestController {
+public class MemberController {
 
     private final MemberService memberService;
 
