@@ -32,6 +32,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 팔로우 응답
     FOLLOW_CANNOT_SELF(HttpStatus.BAD_REQUEST, "FOLLOW4001", "자기 자신은 팔로잉/팔로우 할 수 없습니다."),
     FOLLOW_NOT_DUPLICATED(HttpStatus.BAD_REQUEST, "FOLLOW4002", "이미 팔로잉 한 유저 입니다."),
+
+    // 알림 응답
+    NOTIFICATION_NOT_SENDED(HttpStatus.BAD_REQUEST, "NOTIFICATION4001", "알림 메세지가 전달되지 않았습니다.");
     ;
 
 

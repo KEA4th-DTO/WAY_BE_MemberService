@@ -3,16 +3,13 @@ package com.dto.way.member.domain.service;
 import com.dto.way.member.domain.entity.Follow;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.repository.FollowRepository;
-import com.dto.way.member.domain.repository.MemberRepository;
-import com.dto.way.member.web.dto.FollowDto;
+import com.dto.way.member.web.dto.FollowDTO;
 import com.dto.way.member.web.exception.FollowException;
-import com.dto.way.member.web.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,12 +46,12 @@ public class FollowService {
     }
 
     @Transactional(readOnly = true)
-    public List<FollowDto> followingList(Member selectedMember, Member loginMember) {
+    public List<FollowDTO> followingList(Member selectedMember, Member loginMember) {
         List<Follow> list = followRepository.findByFromMember(selectedMember);
 
         return list.stream()
                 .map(follow -> {
-                    FollowDto followDto = new FollowDto();
+                    FollowDTO followDto = new FollowDTO();
                     followDto.setName(follow.getToMember().getName());
                     followDto.setNickname(follow.getToMember().getNickname());
                     followDto.setProfileImageUrl(follow.getToMember().getProfileImageUrl());
@@ -65,12 +62,12 @@ public class FollowService {
     }
 
     @Transactional(readOnly = true)
-    public List<FollowDto> followerList(Member selectedMember, Member loginMember) {
+    public List<FollowDTO> followerList(Member selectedMember, Member loginMember) {
         List<Follow> list = followRepository.findByToMember(selectedMember);
 
         return list.stream()
                 .map(follow -> {
-                    FollowDto followDto = new FollowDto();
+                    FollowDTO followDto = new FollowDTO();
                     followDto.setName(follow.getFromMember().getName());
                     followDto.setNickname(follow.getFromMember().getNickname());
                     followDto.setProfileImageUrl(follow.getFromMember().getProfileImageUrl());
