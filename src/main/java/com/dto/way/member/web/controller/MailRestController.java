@@ -22,7 +22,7 @@ public class MailRestController {
 
     private final MailService mailSendService;
 
-    @PostMapping("/sendMailCertification")
+    @PostMapping("/send-mail-certification")
     public ApiResponse sendMailCertification(@Validated @RequestBody EmailCertificationRequest request) throws MessagingException, NoSuchAlgorithmException {
 
         mailSendService.sendEmailForCertification(request.getEmail());
