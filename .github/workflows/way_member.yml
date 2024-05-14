@@ -24,7 +24,7 @@ jobs:
     - name: Build and Push
       uses: docker/build-push-action@v4
       with:
-        file: Dockerfile
+        file: ./Dockerfile
         context: .
         push: true
         tags: ${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/kakaocloud-library-client:${{ github.sha }}
