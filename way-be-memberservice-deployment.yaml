@@ -15,12 +15,12 @@ spec:
       nodeSelector:
         area: private
       containers:
-      - name: way-memberservice-container
-        image: haecheol/way_be_memberservice:0.0.7
-        ports:
-        - containerPort: 8080
-        envFrom:
-        - configMapRef:
-            name: way-be-memberservice-config
-        - secretRef:
-            name: way-be-memberservice-secret
+        - name: way-memberservice-container
+          image: gcu-dto-dev.kr-central-2.kcr.dev/way-member/kakaocloud-library-client:a1aad74969180c1cecf7e85424182763af2a86ac
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: way-be-memberservice-config
+            - secretRef:
+                name: way-be-memberservice-secret
