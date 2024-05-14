@@ -53,4 +53,3 @@ jobs:
         git add .
         git commit -m "Update way-be-memberservice-deployment.yaml"
         git remote set-url origin https://${{ secrets.PAT }}@github.com/${{ secrets.USERNAME }}/WAY_BE_MemberService
-        git push --set-upstream origin HEAD
