@@ -20,6 +20,7 @@ jobs:
         password: ${{ secrets.ACCESS_SECRET_KEY }}
 
     - uses: actions/checkout@v3
+    
     - name: Build and Push
       uses: docker/build-push-action@v4
       with:
