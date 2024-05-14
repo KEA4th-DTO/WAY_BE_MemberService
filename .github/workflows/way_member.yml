@@ -2,8 +2,8 @@ name: WAY-member
 run-name: WAY member
 on:
   push:
-    paths:
-      - 'client/**'
+    branches:
+      - '*'
 
 jobs:
   build-and-push-image:
