@@ -37,3 +37,6 @@ out/
 
 src/main/resources/application-db.yml
 src/main/resources/application-keys.yml
+
+### Secret, configmap ###
+way-be-member-sec.yaml

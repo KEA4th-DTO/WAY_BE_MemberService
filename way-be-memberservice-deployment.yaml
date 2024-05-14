@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: way-be-memberservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: way-be-memberservice
+  template:
+    metadata:
+      labels:
+        app: way-be-memberservice
+    spec:
+      nodeSelector:
+        area: private
+      containers:
+      - name: way-memberservice-container
+        image: haecheol/way_be_memberservice:0.0.7
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: way-be-memberservice-config
+        - secretRef:
+            name: way-be-memberservice-secret
