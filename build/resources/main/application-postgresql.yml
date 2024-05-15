@@ -1,0 +1,4 @@
+# DB keys
+POSTGRESQL_DB_HOST: jdbc:postgresql://localhost:5432/way_member
+POSTGRESQL_DB_USER: shc3113
+POSTGRESQL_DB_PASSWORD: 1234
