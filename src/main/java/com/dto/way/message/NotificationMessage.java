@@ -4,12 +4,13 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class NotificationMessage {
 
-    private final String message;
+    private String message;
+    private String sendedMember;
     private LocalDateTime createdAt;
 
 }

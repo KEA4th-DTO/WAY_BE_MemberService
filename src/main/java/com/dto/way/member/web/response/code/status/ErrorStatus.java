@@ -35,6 +35,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 알림 응답
     NOTIFICATION_NOT_SENDED(HttpStatus.BAD_REQUEST, "NOTIFICATION4001", "알림 메세지가 전달되지 않았습니다.");
+
     ;
 
 

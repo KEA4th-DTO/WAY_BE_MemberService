@@ -3,8 +3,10 @@ package com.dto.way.member.web.controller;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.service.FollowService;
 import com.dto.way.member.domain.service.MemberService;
+import com.dto.way.member.domain.service.NotificationService;
 import com.dto.way.member.web.dto.FollowDTO;
 import com.dto.way.member.web.response.ApiResponse;
+import com.dto.way.message.NotificationMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ public class FollowController {
 
     private final MemberService memberService;
     private final FollowService followService;
+    private final NotificationService notificationService;
 
     // 로그인 한 사용자가 팔로잉 하는 API
     @PostMapping("/{friendNickname}")
@@ -31,6 +34,14 @@ public class FollowController {
         Member login_member = memberService.findMemberByEmail(authentication.getName());
         Member to_user = memberService.findMemberByNickname(nickname);
         followService.follow(login_member, to_user);
+
+        // 팔로우 알림 메세지 생성
+        String message = login_member.getNickname() + "님이 회원님을 팔로우하기 시작했습니다.";
+        NotificationMessage notificationMessage = notificationService.createNotificationMessage(to_user.getNickname(), message);
+
+        // Kafka로 메세지 전송
+        notificationService.followNotificationCreate(notificationMessage);
+
         return ApiResponse.of(_OK, null);
     }
 

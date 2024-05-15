@@ -18,7 +18,7 @@ import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/member-service")
-public class MailRestController {
+public class MailController {
 
     private final MailService mailSendService;
 
