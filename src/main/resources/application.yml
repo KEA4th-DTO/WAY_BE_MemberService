@@ -62,7 +62,7 @@ spring:
         smtp.timeout: 60000 # 60000ms, 1분
         smtp.starttls.enable: true
   kafka:
-    bootstrap-servers: 192.168.211.7:9092
+    bootstrap-servers: 10.109.201.158:9092
     template:
       default-topic: follow
     consumer:

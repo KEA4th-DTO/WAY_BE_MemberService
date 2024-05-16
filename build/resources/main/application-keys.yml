@@ -1,0 +1,13 @@
+# S3 keys
+AWS_S3_ACCESS_KEY: AKIAVRUVT2SXOLX2EQFV
+AWS_S3_SECRET_KEY: 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
+AWS_S3_BUCKET_NAME: fridgeproject
+
+# JWT key
+jwt:
+  secret: e9caf9e059da3ae65f50ef782115ec956422ef5ce30838059523cbe77e93ecbe
+
+spring:
+  mail:
+    username: shc3113@gachon.ac.kr
+    password: mgecxfsasexeywoo
