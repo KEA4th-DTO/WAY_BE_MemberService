@@ -24,3 +24,5 @@ spec:
                 name: way-be-memberservice-config
             - secretRef:
                 name: way-be-memberservice-secret
+      imagePullSecrets:
+        - name: way-member-regi-sec
