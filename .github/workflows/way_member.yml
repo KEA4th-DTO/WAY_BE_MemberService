@@ -4,20 +4,10 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'way-be-memberservice-deployment.yaml'
 
 jobs:
-  check-lock:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check if workflow is already running
-        run: |
-          if [ -f /tmp/way_workflow_lock ]; then
-            echo "Workflow is already running, exiting."
-            exit 0
-          else
-            touch /tmp/way_workflow_lock
-          fi
-
   build-and-push-image:
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +59,7 @@ jobs:
   update-deployment-file:
     
     runs-on: ubuntu-latest
-    needs: [build-and-push-image, check-lock]
+    needs: build-and-push-image
 
     steps:
     - name: Checkout WAY_BE_MemberService repository
