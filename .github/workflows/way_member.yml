@@ -3,7 +3,7 @@ run-name: WAY member
 on:
   push:
     branches:
-      - '*'
+      - main
 
 jobs:
   check-lock:
