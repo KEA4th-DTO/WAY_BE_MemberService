@@ -16,7 +16,7 @@ spec:
         area: private
       containers:
         - name: way-memberservice-container
-          image: gcu-dto-dev.kr-central-2.kcr.dev/way-member/kakaocloud-library-client:a1aad74969180c1cecf7e85424182763af2a86ac
+          image: gcu-dto-dev.kr-central-2.kcr.dev/way-member/way-member:46739e3d0c571e8c890216343667c840150989ee
           ports:
             - containerPort: 8080
           envFrom:
