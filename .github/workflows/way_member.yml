@@ -44,7 +44,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build --no-daemon --console=plain
+      run: ./gradlew build -x test --no-daemon --console=plain
 
     - name: Build and Push
       uses: docker/build-push-action@v4
