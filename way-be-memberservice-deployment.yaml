@@ -16,7 +16,7 @@ spec:
         area: private
       containers:
         - name: way-memberservice-container
-          image: gcu-dto-dev.kr-central-2.kcr.dev/way-member/way-member:46739e3d0c571e8c890216343667c840150989ee
+          image: gcu-dto-dev.kr-central-2.kcr.dev/way-member/way-member:53bc787b438fff287347015e5df20a40d82bbafa
           ports:
             - containerPort: 8080
           envFrom:
