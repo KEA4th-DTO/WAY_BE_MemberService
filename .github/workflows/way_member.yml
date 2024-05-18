@@ -3,8 +3,7 @@ run-name: WAY member
 on:
   push:
     paths:
-      - 'src/**'
-      - 'README.md'
+      - '*'
 
 jobs:
   build-and-push-image:
@@ -61,10 +60,10 @@ jobs:
     needs: build-and-push-image
 
     steps:
-    - name: Checkout WAY_BE_MemberService repository
+    - name: Checkout argo-manifest repository
       uses: actions/checkout@v3
       with:
-        repository: ${{ secrets.USERNAME }}/WAY_BE_MemberService
+        repository: ${{ secrets.USERNAME }}/argo-manifest
         token: ${{ secrets.PAT }}
 
     - name: Install yq
@@ -80,5 +79,5 @@ jobs:
         git config --global user.name "${{ secrets.USERNAME }}"
         git add .
         git commit -m "Update way-be-memberservice-deployment.yaml"
-        git remote set-url origin https://${{ secrets.PAT }}@github.com/${{ secrets.USERNAME }}/WAY_BE_MemberService
+        git remote set-url origin https://${{ secrets.PAT }}@github.com/${{ secrets.USERNAME }}/argo-manifest
         git push --set-upstream origin HEAD
