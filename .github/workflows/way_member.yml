@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'way-be-memberservice-deployment.yaml'
 
 jobs:
   build-and-push-image:
@@ -81,5 +79,5 @@ jobs:
         git config --global user.name "${{ secrets.USERNAME }}"
         git add .
         git commit -m "Update way-be-memberservice-deployment.yaml"
-        git push
         git remote set-url origin https://${{ secrets.PAT }}@github.com/${{ secrets.USERNAME }}/WAY_BE_MemberService
+        git push --set-upstream origin HEAD
