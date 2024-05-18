@@ -35,33 +35,33 @@ public class MemberService {
     private final RedisService redisService;
 
     @Transactional
-    public String createMember(CreateMemberRequestDto createMemberRequestDto) {
+    public String createMember(CreateMemberRequestDTO createMemberRequestDTO) {
 
         // 비밀번호 일치 검사
-        if (!checkEqualPassword(createMemberRequestDto)) {
+        if (!checkEqualPassword(createMemberRequestDTO)) {
 
             return MEMBER_PASSWORD_NOT_MATCHED.getCode();
         }
 
         // 이메일 중복 검사
-        if (!checkEmailDuplication(createMemberRequestDto)) {
+        if (!checkEmailDuplication(createMemberRequestDTO)) {
 
             return MEMBER_EMAIL_DUPLICATED.getCode();
         }
 
         // 닉네임 중복 검사
-        if (!checkNicknameDuplication(createMemberRequestDto)) {
+        if (!checkNicknameDuplication(createMemberRequestDTO)) {
 
             return MEMBER_NICKNAME_DUPLICATED.getCode();
         }
 
-        String password = passwordEncoder.encode(createMemberRequestDto.getPassword());
+        String password = passwordEncoder.encode(createMemberRequestDTO.getPassword());
 
         Member member = Member.builder()
-                .name(createMemberRequestDto.getName())
-                .email(createMemberRequestDto.getEmail())
+                .name(createMemberRequestDTO.getName())
+                .email(createMemberRequestDTO.getEmail())
                 .password(password)
-                .nickname(createMemberRequestDto.getNickname())
+                .nickname(createMemberRequestDTO.getNickname())
                 .createdAt(LocalDateTime.now())
                 .memberAuth(CLIENT)
                 .build();
@@ -72,17 +72,17 @@ public class MemberService {
 
     }
 
-    public JwtToken login(LoginMemberRequestDto loginMemberRequestDto) {
-        Optional<Member> member = memberRepository.findByEmail(loginMemberRequestDto.getEmail());
+    public JwtToken login(LoginMemberRequestDTO loginMemberRequestDTO) {
+        Optional<Member> member = memberRepository.findByEmail(loginMemberRequestDTO.getEmail());
         if (member.isEmpty()) {
             return new JwtToken(MEMBER_LOGIN_FAILED.getCode(), null, null);
         } else {
-            if (!member.get().getPassword().equals(loginMemberRequestDto.getPassword())) {
+            if (!member.get().getPassword().equals(loginMemberRequestDTO.getPassword())) {
                 return new JwtToken(MEMBER_LOGIN_FAILED.getCode(), null, null);
             }
         }
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginMemberRequestDto.getEmail(), loginMemberRequestDto.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginMemberRequestDTO.getEmail(), loginMemberRequestDTO.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
@@ -119,7 +119,7 @@ public class MemberService {
                 // 기존에 있던 토큰은 삭제
                 redisService.deleteValues(refreshToken);
 
-                return login(new LoginMemberRequestDto(email, password));
+                return login(new LoginMemberRequestDTO(email, password));
             }
 
             return new JwtToken("Refresh Token과 사용자 정보가 일치하지 않습니다.", null, null);
@@ -129,16 +129,16 @@ public class MemberService {
 
 
     // 비밀번호와 비밀번화 확인이 같은지 체크하는 메소드
-    private boolean checkEqualPassword(CreateMemberRequestDto createMemberRequestDto) {
-        if (createMemberRequestDto.getPassword().equals(createMemberRequestDto.getPasswordCheck())) {
+    private boolean checkEqualPassword(CreateMemberRequestDTO createMemberRequestDTO) {
+        if (createMemberRequestDTO.getPassword().equals(createMemberRequestDTO.getPasswordCheck())) {
             return true; // 일치하는 경우
         }
         return false; // 일치하지 않는 경우
     }
 
     // 닉네임 중복 검사 메소드
-    private boolean checkNicknameDuplication(CreateMemberRequestDto createMemberRequestDto) {
-        boolean checked = memberRepository.existsByNickname(createMemberRequestDto.getNickname());
+    private boolean checkNicknameDuplication(CreateMemberRequestDTO createMemberRequestDTO) {
+        boolean checked = memberRepository.existsByNickname(createMemberRequestDTO.getNickname());
         if (checked) { // 중복이라면
             return false;
         }
@@ -146,7 +146,7 @@ public class MemberService {
     }
 
     // 이메일 중복 검사 메소드
-    private boolean checkEmailDuplication(CreateMemberRequestDto createMemberRequestDto) {
+    private boolean checkEmailDuplication(CreateMemberRequestDTO createMemberRequestDto) {
         boolean checked = memberRepository.existsByEmail(createMemberRequestDto.getEmail());
         if (checked) {
             return false;

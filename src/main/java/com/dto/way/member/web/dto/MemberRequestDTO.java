@@ -11,7 +11,7 @@ public class MemberRequestDTO {
 
     @Getter
     @Setter
-    public static class CreateMemberRequestDto {
+    public static class CreateMemberRequestDTO {
 
         @NotBlank(message = "이름은 필수 입력 값입니다.")
         private String name;
@@ -37,7 +37,7 @@ public class MemberRequestDTO {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class LoginMemberRequestDto {
+    public static class LoginMemberRequestDTO {
 
         @NotBlank(message = "이메일은 필수 입력 값입니다.")
         @Email(message = "이메일 형식에 맞지 않습니다.")

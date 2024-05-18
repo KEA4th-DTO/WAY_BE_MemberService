@@ -24,3 +24,21 @@ spec:
                 name: way-be-memberservice-config
             - secretRef:
                 name: way-be-memberservice-secret
+
+---
+apiVersion: apps/v1
+kind: Service
+apiVersion: v1
+metadata:
+  name: member-service
+  annotations:
+    service.beta.kubernetes.io/openstack-internal-load-balancer: 'false'
+    loadbalancer.ike.kakaocloud.com/load-balancer-type: 'NLB'
+spec:
+  selector:
+    app: way-be-memberservice
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 50004
+      targetPort: 8080
