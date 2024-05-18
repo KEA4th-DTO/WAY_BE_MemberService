@@ -16,7 +16,7 @@ spec:
         area: private
       containers:
         - name: way-memberservice-container
-          image: gcu-dto-dev.kr-central-2.kcr.dev/way-member/kakaocloud-library-client:a1aad74969180c1cecf7e85424182763af2a86ac
+          image: gcu-dto-dev.kr-central-2.kcr.dev/way-member/way-member:af35d2273640a760a31be6145f3491b87364c88f
           ports:
             - containerPort: 8080
           envFrom:
@@ -24,6 +24,8 @@ spec:
                 name: way-be-memberservice-config
             - secretRef:
                 name: way-be-memberservice-secret
+        imagePullSecrets:
+        - name: way-member-regi-sec
 
 ---
 apiVersion: apps/v1
@@ -42,3 +44,4 @@ spec:
     - name: http
       port: 50004
       targetPort: 8080
+

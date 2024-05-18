@@ -3,7 +3,9 @@ run-name: WAY member
 on:
   push:
     branches:
-      - '*'
+      - main
+    paths-ignore:
+      - 'way-be-memberservice-deployment.yaml'
 
 jobs:
   build-and-push-image:
@@ -21,14 +23,30 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    # - name: Set up JDK 17
-    #   uses: actions/setup-java@v3
-    #   with:
-    #     java-version: '17'
-    #     distribution: 'temurin'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-    # - name: Build with Gradle
-    #   run: ./gradlew build --no-daemon --console=plain
+    - name: Start Redis
+      uses: supercharge/redis-github-action@1.1.0
+      with:
+        redis-version: 7.2.4
+
+    - name: Cache Gradle packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+  
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build -x test --no-daemon --console=plain
 
     - name: Build and Push
       uses: docker/build-push-action@v4
@@ -39,8 +57,10 @@ jobs:
         tags: ${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/way-member:${{ github.sha }}
 
   update-deployment-file:
+    
     runs-on: ubuntu-latest
     needs: build-and-push-image
+
     steps:
     - name: Checkout WAY_BE_MemberService repository
       uses: actions/checkout@v3
@@ -56,9 +76,11 @@ jobs:
         yq e '.spec.template.spec.containers[0].image = "${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/way-member:${{ github.sha }}"' ./way-be-memberservice-deployment.yaml -i
 
     - name: Commit and Push changes
+      
       run: |
         git config --global user.email "${{ secrets.EMAIL }}"
         git config --global user.name "${{ secrets.USERNAME }}"
         git add .
         git commit -m "Update way-be-memberservice-deployment.yaml"
+        git push
         git remote set-url origin https://${{ secrets.PAT }}@github.com/${{ secrets.USERNAME }}/WAY_BE_MemberService
