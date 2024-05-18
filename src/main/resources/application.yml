@@ -2,7 +2,7 @@ spring:
   config:
     import:
       - application-mysql.yml
-      - application-keys.yml
+      #- application-keys.yml
       - application-postgresql.yml
       - application-postgresql-kubernetis.yml
   application:
