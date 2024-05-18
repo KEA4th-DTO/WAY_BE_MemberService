@@ -12,5 +12,4 @@ spec:
   - protocol: TCP
     port: 50004
     targetPort: 7000
-  type: ClusterIP
-  clusterIP: None
+  type: LoadBalancer  
