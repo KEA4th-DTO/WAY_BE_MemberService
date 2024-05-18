@@ -24,13 +24,12 @@ spec:
                 name: way-be-memberservice-config
             - secretRef:
                 name: way-be-memberservice-secret
-        imagePullSecrets:
+      imagePullSecrets:
         - name: way-member-regi-sec
 
 ---
 apiVersion: apps/v1
 kind: Service
-apiVersion: v1
 metadata:
   name: member-service
   annotations:
