@@ -2,8 +2,9 @@ name: WAY-member
 run-name: WAY member
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'src/**'
+      - 'README.md'
 
 jobs:
   build-and-push-image:
