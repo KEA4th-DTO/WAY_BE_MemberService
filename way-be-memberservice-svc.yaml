@@ -1,5 +1,0 @@
-spec:
-  template:
-    spec:
-      containers:
-        - image: gcu-dto-dev.kr-central-2.kcr.dev/way-member/way-member:c33acc3c6338f9e9b94a16584be6de9281c8fb74
