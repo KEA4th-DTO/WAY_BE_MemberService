@@ -63,7 +63,7 @@ jobs:
     - name: Checkout argo-manifest repository
       uses: actions/checkout@v3
       with:
-        repository: ${{ secrets.USERNAME }}/argo-manifest/member
+        repository: ${{ secrets.USERNAME }}/argo-manifest
         token: ${{ secrets.PAT }}
 
     - name: Install yq
@@ -71,7 +71,7 @@ jobs:
 
     - name: Update image in deployment file
       run: |
-        yq e '.spec.template.spec.containers[0].image = "${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/way-member:${{ github.sha }}"' ./way-be-memberservice-deployment.yaml -i 
+        yq e '.spec.template.spec.containers[0].image = "${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/member/way-member:${{ github.sha }}"' ./way-be-memberservice-deployment.yaml -i 
     - name: Commit and Push changes
       
       run: |
