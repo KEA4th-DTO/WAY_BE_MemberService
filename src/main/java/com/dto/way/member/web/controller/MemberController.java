@@ -22,6 +22,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    // 회원가입
     @PostMapping("/signup")
     public ApiResponse<CreateMemberRequestDTO> signUp(@Valid @RequestBody CreateMemberRequestDTO createMemberRequestDTO) {
 
@@ -44,6 +45,7 @@ public class MemberController {
         }
     }
 
+    // 로그인
     @PostMapping("/login")
     public ApiResponse<LoginMemberResponseDTO> login(@Valid @RequestBody LoginMemberRequestDTO loginMemberRequestDTO) {
 
@@ -64,6 +66,7 @@ public class MemberController {
         }
     }
 
+    // 로그아웃
     @PostMapping("/logout")
     public ApiResponse<JwtToken> logout(@RequestBody JwtToken jwtToken) {
         memberService.logout(jwtToken);
@@ -71,12 +74,14 @@ public class MemberController {
         return ApiResponse.of(MEMBER_LOGOUT, jwtToken);
     }
 
+    // refresh token을 이용한 토큰 재발급
     @PostMapping("/recreate-token")
     public JwtToken recreateToken(@RequestBody JwtToken jwtToken) {
         String refreshToken = jwtToken.getRefreshToken();
         return memberService.checkRefreshTokenisValid(refreshToken);
     }
 
+    // 닉네임 중복 검사
     @PostMapping("/check-nickname")
     public ApiResponse<Boolean> checkNickname(@RequestBody String nickname) {
         if (memberService.checkNicknameDuplication(nickname)) {
@@ -86,6 +91,7 @@ public class MemberController {
         }
     }
 
+    // 이메일 중복 검사
     @PostMapping("/check-email")
     public ApiResponse<Boolean> checkEmail(@RequestBody String email) {
         if (memberService.checkEmailDuplication(email)) {
