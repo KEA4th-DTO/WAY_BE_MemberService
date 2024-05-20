@@ -1,6 +1,7 @@
 package com.dto.way.member.domain.service;
 
 import com.dto.way.member.domain.entity.Member;
+import com.dto.way.member.domain.entity.MemberStatus;
 import com.dto.way.member.domain.repository.MemberRepository;
 import com.dto.way.member.global.JwtTokenProvider;
 import com.dto.way.member.web.dto.JwtToken;
@@ -44,13 +45,13 @@ public class MemberService {
         }
 
         // 이메일 중복 검사
-        if (!checkEmailDuplication(createMemberRequestDTO)) {
+        if (!checkEmailDuplication(createMemberRequestDTO.getEmail())) {
 
             return MEMBER_EMAIL_DUPLICATED.getCode();
         }
 
         // 닉네임 중복 검사
-        if (!checkNicknameDuplication(createMemberRequestDTO)) {
+        if (!checkNicknameDuplication(createMemberRequestDTO.getNickname())) {
 
             return MEMBER_NICKNAME_DUPLICATED.getCode();
         }
@@ -62,6 +63,8 @@ public class MemberService {
                 .email(createMemberRequestDTO.getEmail())
                 .password(password)
                 .nickname(createMemberRequestDTO.getNickname())
+                .phoneNumber(createMemberRequestDTO.getPhoneNumber())
+                .memberStatus(MemberStatus.ACTIVATE)
                 .createdAt(LocalDateTime.now())
                 .memberAuth(CLIENT)
                 .build();
@@ -129,7 +132,7 @@ public class MemberService {
 
 
     // 비밀번호와 비밀번화 확인이 같은지 체크하는 메소드
-    private boolean checkEqualPassword(CreateMemberRequestDTO createMemberRequestDTO) {
+    public boolean checkEqualPassword(CreateMemberRequestDTO createMemberRequestDTO) {
         if (createMemberRequestDTO.getPassword().equals(createMemberRequestDTO.getPasswordCheck())) {
             return true; // 일치하는 경우
         }
@@ -137,8 +140,8 @@ public class MemberService {
     }
 
     // 닉네임 중복 검사 메소드
-    private boolean checkNicknameDuplication(CreateMemberRequestDTO createMemberRequestDTO) {
-        boolean checked = memberRepository.existsByNickname(createMemberRequestDTO.getNickname());
+    public boolean checkNicknameDuplication(String nickname) {
+        boolean checked = memberRepository.existsByNickname(nickname);
         if (checked) { // 중복이라면
             return false;
         }
@@ -146,8 +149,8 @@ public class MemberService {
     }
 
     // 이메일 중복 검사 메소드
-    private boolean checkEmailDuplication(CreateMemberRequestDTO createMemberRequestDto) {
-        boolean checked = memberRepository.existsByEmail(createMemberRequestDto.getEmail());
+    public boolean checkEmailDuplication(String email) {
+        boolean checked = memberRepository.existsByEmail(email);
         if (checked) {
             return false;
         }

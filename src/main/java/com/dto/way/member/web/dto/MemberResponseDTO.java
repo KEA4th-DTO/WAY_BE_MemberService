@@ -13,7 +13,9 @@ public class MemberResponseDTO {
     @Setter
     public static class LoginMemberResponseDTO {
 
-        private Member loginMember;
+        private String name;
+        private String nickname;
+        private String email;
         private JwtToken jwtToken;
     }
 }

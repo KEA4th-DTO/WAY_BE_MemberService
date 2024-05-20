@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.dto.way.member.ApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-16T11:27:23" hostname="DESKTOP-N0LCKCJ" time="0.74">
+<testsuite name="com.dto.way.member.ApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-20T09:05:19" hostname="DESKTOP-N0LCKCJ" time="0.725">
   <properties/>
-  <testcase name="contextLoads()" classname="com.dto.way.member.ApplicationTests" time="0.74"/>
-  <system-out><![CDATA[20:27:13.238 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.dto.way.member.ApplicationTests]: ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-20:27:13.398 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.dto.way.member.Application for test class com.dto.way.member.ApplicationTests
+  <testcase name="contextLoads()" classname="com.dto.way.member.ApplicationTests" time="0.725"/>
+  <system-out><![CDATA[18:05:09.510 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.dto.way.member.ApplicationTests]: ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:05:09.680 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.dto.way.member.Application for test class com.dto.way.member.ApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -13,58 +13,58 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.4)
 
-2024-05-16T20:27:14.120+09:00  INFO 17792 --- [way.member] [    Test worker] com.dto.way.member.ApplicationTests      : Starting ApplicationTests using Java 17.0.10 with PID 17792 (started by shc31 in C:\Users\shc31\Desktop\git_repositories\WAY_BE_MemberService\way.member)
-2024-05-16T20:27:14.122+09:00  INFO 17792 --- [way.member] [    Test worker] com.dto.way.member.ApplicationTests      : No active profile set, falling back to 1 default profile: "default"
-2024-05-16T20:27:15.041+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-05-16T20:27:15.042+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2024-05-16T20:27:15.068+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
-2024-05-16T20:27:15.401+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-05-16T20:27:15.403+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-05-16T20:27:15.628+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 218 ms. Found 2 JPA repository interfaces.
-2024-05-16T20:27:15.641+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2024-05-16T20:27:15.642+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2024-05-16T20:27:15.652+09:00  INFO 17792 --- [way.member] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.dto.way.member.domain.repository.FollowRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2024-05-16T20:27:15.652+09:00  INFO 17792 --- [way.member] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.dto.way.member.domain.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-2024-05-16T20:27:15.653+09:00  INFO 17792 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
-2024-05-16T20:27:16.516+09:00  INFO 17792 --- [way.member] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-05-16T20:27:16.636+09:00  INFO 17792 --- [way.member] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
-2024-05-16T20:27:16.651+09:00  INFO 17792 --- [way.member] [    Test worker] o.h.spatial.integration.SpatialService   : HHH80000001: hibernate-spatial integration enabled : true
-2024-05-16T20:27:16.697+09:00  INFO 17792 --- [way.member] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-05-16T20:27:16.957+09:00  INFO 17792 --- [way.member] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-05-16T20:27:17.306+09:00  INFO 17792 --- [way.member] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@246df37b
-2024-05-16T20:27:17.308+09:00  INFO 17792 --- [way.member] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-05-16T20:27:17.425+09:00  INFO 17792 --- [way.member] [    Test worker] org.hibernate.spatial                    : HHH80000003: hibernate-spatial adding type contributions from : org.hibernate.spatial.dialect.postgis.PostgisDialectContributor
-2024-05-16T20:27:17.731+09:00  INFO 17792 --- [way.member] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-05-16T20:27:17.786+09:00  INFO 17792 --- [way.member] [    Test worker] org.hibernate.spatial                    : HHH80000003: hibernate-spatial adding type contributions from : org.hibernate.spatial.dialect.postgis.PostgisDialectContributor
-2024-05-16T20:27:18.391+09:00  INFO 17792 --- [way.member] [    Test worker] org.hibernate.spatial                    : HHH80000004: hibernate-spatial adding function contributions from : org.hibernate.spatial.dialect.postgis.PostgisDialectContributor
-2024-05-16T20:27:19.261+09:00  INFO 17792 --- [way.member] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-20T18:05:10.513+09:00  INFO 23812 --- [way.member] [    Test worker] com.dto.way.member.ApplicationTests      : Starting ApplicationTests using Java 17.0.10 with PID 23812 (started by shc31 in C:\Users\shc31\Desktop\git_repositories\WAY_BE_MemberService\way.member)
+2024-05-20T18:05:10.515+09:00  INFO 23812 --- [way.member] [    Test worker] com.dto.way.member.ApplicationTests      : No active profile set, falling back to 1 default profile: "default"
+2024-05-20T18:05:11.482+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-20T18:05:11.483+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-05-20T18:05:11.515+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2024-05-20T18:05:11.904+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-20T18:05:11.905+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-20T18:05:12.156+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 245 ms. Found 2 JPA repository interfaces.
+2024-05-20T18:05:12.170+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-05-20T18:05:12.170+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-05-20T18:05:12.180+09:00  INFO 23812 --- [way.member] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.dto.way.member.domain.repository.FollowRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-05-20T18:05:12.180+09:00  INFO 23812 --- [way.member] [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.dto.way.member.domain.repository.MemberRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-05-20T18:05:12.181+09:00  INFO 23812 --- [way.member] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2024-05-20T18:05:13.135+09:00  INFO 23812 --- [way.member] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-20T18:05:13.288+09:00  INFO 23812 --- [way.member] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-05-20T18:05:13.305+09:00  INFO 23812 --- [way.member] [    Test worker] o.h.spatial.integration.SpatialService   : HHH80000001: hibernate-spatial integration enabled : true
+2024-05-20T18:05:13.352+09:00  INFO 23812 --- [way.member] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-05-20T18:05:13.603+09:00  INFO 23812 --- [way.member] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-05-20T18:05:13.950+09:00  INFO 23812 --- [way.member] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@58ebee9
+2024-05-20T18:05:13.954+09:00  INFO 23812 --- [way.member] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-05-20T18:05:14.078+09:00  INFO 23812 --- [way.member] [    Test worker] org.hibernate.spatial                    : HHH80000003: hibernate-spatial adding type contributions from : org.hibernate.spatial.dialect.postgis.PostgisDialectContributor
+2024-05-20T18:05:14.373+09:00  INFO 23812 --- [way.member] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-20T18:05:14.414+09:00  INFO 23812 --- [way.member] [    Test worker] org.hibernate.spatial                    : HHH80000003: hibernate-spatial adding type contributions from : org.hibernate.spatial.dialect.postgis.PostgisDialectContributor
+2024-05-20T18:05:14.997+09:00  INFO 23812 --- [way.member] [    Test worker] org.hibernate.spatial                    : HHH80000004: hibernate-spatial adding function contributions from : org.hibernate.spatial.dialect.postgis.PostgisDialectContributor
+2024-05-20T18:05:15.874+09:00  INFO 23812 --- [way.member] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
 Hibernate: 
     alter table if exists follow 
        drop constraint if exists FKiocu8anmamh4wr0xbg6t39kts
-2024-05-16T20:27:19.290+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2024-05-16T20:27:19.290+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "follow" 릴레이션 없음, 건너뜀
+2024-05-20T18:05:15.906+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-05-20T18:05:15.906+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "follow" 릴레이션 없음, 건너뜀
 Hibernate: 
     alter table if exists follow 
        drop constraint if exists FKf217m522s4rxjlskf7osv1j42
-2024-05-16T20:27:19.291+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2024-05-16T20:27:19.291+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "follow" 릴레이션 없음, 건너뜀
+2024-05-20T18:05:15.907+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-05-20T18:05:15.908+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "follow" 릴레이션 없음, 건너뜀
 Hibernate: 
     alter table if exists member_roles 
        drop constraint if exists FKruptm2dtwl95mfks4bnhv828k
-2024-05-16T20:27:19.292+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2024-05-16T20:27:19.292+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "member_roles" 릴레이션 없음, 건너뜀
+2024-05-20T18:05:15.909+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-05-20T18:05:15.909+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "member_roles" 릴레이션 없음, 건너뜀
 Hibernate: 
     drop table if exists follow cascade
-2024-05-16T20:27:19.293+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2024-05-16T20:27:19.293+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "follow" 테이블 없음, 무시함
+2024-05-20T18:05:15.910+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-05-20T18:05:15.910+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "follow" 테이블 없음, 무시함
 Hibernate: 
     drop table if exists member cascade
-2024-05-16T20:27:19.294+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2024-05-16T20:27:19.294+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "member" 테이블 없음, 무시함
+2024-05-20T18:05:15.911+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-05-20T18:05:15.911+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "member" 테이블 없음, 무시함
 Hibernate: 
     drop table if exists member_roles cascade
-2024-05-16T20:27:19.295+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2024-05-16T20:27:19.295+09:00  WARN 17792 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "member_roles" 테이블 없음, 무시함
+2024-05-20T18:05:15.912+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2024-05-20T18:05:15.912+09:00  WARN 23812 --- [way.member] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : "member_roles" 테이블 없음, 무시함
 Hibernate: 
     create table follow (
         follow_id bigserial not null,
@@ -85,6 +85,7 @@ Hibernate:
         name varchar(255) not null,
         nickname varchar(255) not null,
         password varchar(255) not null,
+        phone_number varchar(255) not null,
         profile_image_url varchar(255),
         primary key (member_id)
     )
@@ -108,11 +109,11 @@ Hibernate:
        add constraint FKruptm2dtwl95mfks4bnhv828k 
        foreign key (member_member_id) 
        references member
-2024-05-16T20:27:19.348+09:00  INFO 17792 --- [way.member] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-05-16T20:27:19.828+09:00  INFO 17792 --- [way.member] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2024-05-16T20:27:21.894+09:00  WARN 17792 --- [way.member] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-05-16T20:27:22.421+09:00  INFO 17792 --- [way.member] [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3d376f28, org.springframework.security.web.context.SecurityContextHolderFilter@59711ea7, org.springframework.security.web.header.HeaderWriterFilter@1925be93, org.springframework.security.web.authentication.logout.LogoutFilter@5563630d, com.dto.way.member.global.filter.JwtAuthenticationFilter@7a08da83, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@24945f50, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@75862489, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2f67401, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@116e03e9, org.springframework.security.web.access.ExceptionTranslationFilter@4b29f03e, org.springframework.security.web.access.intercept.AuthorizationFilter@346e62d7]
-2024-05-16T20:27:23.047+09:00  INFO 17792 --- [way.member] [    Test worker] com.dto.way.member.ApplicationTests      : Started ApplicationTests in 9.395 seconds (process running for 11.301)
+2024-05-20T18:05:15.963+09:00  INFO 23812 --- [way.member] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-20T18:05:16.447+09:00  INFO 23812 --- [way.member] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-20T18:05:18.503+09:00  WARN 23812 --- [way.member] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-20T18:05:19.028+09:00  INFO 23812 --- [way.member] [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@24028f51, org.springframework.security.web.context.SecurityContextHolderFilter@4fa78886, org.springframework.security.web.header.HeaderWriterFilter@1fe8a2fc, org.springframework.web.filter.CorsFilter@7c2b2b56, org.springframework.security.web.authentication.logout.LogoutFilter@31dd8a0b, com.dto.way.member.global.filter.JwtAuthenticationFilter@26420ed1, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@27d1b432, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3e1201dd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@353ab9e5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5df744d4, org.springframework.security.web.access.ExceptionTranslationFilter@3af5f0da, org.springframework.security.web.access.intercept.AuthorizationFilter@27ffe1d6]
+2024-05-20T18:05:19.699+09:00  INFO 23812 --- [way.member] [    Test worker] com.dto.way.member.ApplicationTests      : Started ApplicationTests in 9.755 seconds (process running for 11.751)
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

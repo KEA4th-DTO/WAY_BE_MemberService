@@ -3,7 +3,6 @@ package com.dto.way.member.web.controller;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.service.MemberService;
 import com.dto.way.member.web.dto.JwtToken;
-import com.dto.way.member.web.dto.MemberResponseDTO;
 import com.dto.way.member.web.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +55,9 @@ public class MemberController {
             return ApiResponse.onFailure(MEMBER_LOGIN_FAILED.getCode(), MEMBER_LOGIN_FAILED.getMessage(), loginMemberResponseDTO);
         } else {
             Member loginMember = memberService.findMemberByEmail(loginMemberRequestDTO.getEmail());
-            loginMemberResponseDTO.setLoginMember(loginMember);
+            loginMemberResponseDTO.setName(loginMember.getName());
+            loginMemberResponseDTO.setEmail(loginMember.getEmail());
+            loginMemberResponseDTO.setNickname(loginMember.getNickname());
             loginMemberResponseDTO.setJwtToken(jwtToken);
 
             return ApiResponse.of(MEMBER_LOGIN, loginMemberResponseDTO);
@@ -70,15 +71,27 @@ public class MemberController {
         return ApiResponse.of(MEMBER_LOGOUT, jwtToken);
     }
 
-    @GetMapping("/testCICD")
-    public String testCICD() {
-
-        return "OK";
-    }
-
     @PostMapping("/recreate-token")
     public JwtToken recreateToken(@RequestBody JwtToken jwtToken) {
         String refreshToken = jwtToken.getRefreshToken();
         return memberService.checkRefreshTokenisValid(refreshToken);
+    }
+
+    @PostMapping("/check-nickname")
+    public ApiResponse<Boolean> checkNickname(@RequestBody String nickname) {
+        if (memberService.checkNicknameDuplication(nickname)) {
+            return ApiResponse.onSuccess(true);
+        } else {
+            return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), false);
+        }
+    }
+
+    @PostMapping("/check-email")
+    public ApiResponse<Boolean> checkEmail(@RequestBody String email) {
+        if (memberService.checkEmailDuplication(email)) {
+            return ApiResponse.onSuccess(true);
+        } else {
+            return ApiResponse.onFailure(MEMBER_EMAIL_DUPLICATED.getCode(), MEMBER_EMAIL_DUPLICATED.getMessage(), false);
+        }
     }
 }

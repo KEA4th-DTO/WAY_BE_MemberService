@@ -51,6 +51,9 @@ public class Member implements UserDetails {
     @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable = false)
+    private String phoneNumber;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
