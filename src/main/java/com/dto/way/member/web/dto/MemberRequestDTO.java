@@ -33,7 +33,7 @@ public class MemberRequestDTO {
                 message = "닉네임은 영문 대,소문자와 숫자, 특수문자(._)만 가능합니다. 길이는 5자 ~ 30자 입니다.")
         private String nickname;
 
-        @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
+        @NotBlank(message = "전화번호는 필수 입력 값입니다.")
         @Pattern(regexp = "^010-\\d{4}-\\d{4}$", message = "유효한 전화번호 형식이 아닙니다.")
         private String phoneNumber;
     }
