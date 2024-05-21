@@ -35,8 +35,7 @@ out/
 ### VS Code ###
 .vscode/
 
-src/main/resources/application.yml
 src/main/resources/application-mysql.yml
 src/main/resources/application-keys.yml
 src/main/resources/application-postgresql.yml
-src/main/resources/application-postgresql-kubernetis.yml.yml
+src/main/resources/application-postgresql-kubernetis.yml
