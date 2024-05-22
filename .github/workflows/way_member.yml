@@ -71,13 +71,13 @@ jobs:
 
     - name: Update image in rollout file
       run: |
-        yq e '.spec.template.spec.containers[0].image = "${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/way-member:${{ github.sha }}"' ./member/way-be-memberservice-rollout.yaml -i 
+        yq e '.spec.template.spec.containers[0].image = "${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/way-member:${{ github.sha }}"' ./backend/way-be-memberservice-rollout.yaml -i 
     - name: Commit and Push changes
       
       run: |
         git config --global user.email "${{ secrets.EMAIL }}"
         git config --global user.name "${{ secrets.USERNAME }}"
         git add .
-        git commit -m "Update way-be-memberservice-rollout.yaml"
+        git commit -m "[CI/CD] Update way-be-memberservice-rollout.yaml"
         git remote set-url origin https://${{ secrets.PAT }}@github.com/${{ secrets.USERNAME }}/argo-manifest
         git push --set-upstream origin HEAD
