@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                         .requestMatchers("/member-service/login").permitAll()
                         .requestMatchers("/member-service/signup").permitAll()
                         .requestMatchers("/member-service/logout").permitAll()
