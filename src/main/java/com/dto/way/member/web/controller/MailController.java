@@ -22,6 +22,7 @@ public class MailController {
 
     private final MailService mailSendService;
 
+    // 이메일 인증 API
     @PostMapping("/send-mail-certification")
     public ApiResponse sendMailCertification(@Validated @RequestBody EmailCertificationRequest request) throws MessagingException, NoSuchAlgorithmException {
 
