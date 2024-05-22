@@ -71,7 +71,7 @@ jobs:
 
     - name: Update image in rollout file
       run: |
-        yq e '.spec.template.spec.containers[0].image = "${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/way-member:${{ github.sha }}"' ./backend/way-be-memberservice-rollout.yaml -i 
+        yq e '.spec.template.spec.containers[0].image = "${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/way-member:${{ github.sha }}"' ./member/way-be-memberservice-rollout.yaml -i 
     - name: Commit and Push changes
       
       run: |
