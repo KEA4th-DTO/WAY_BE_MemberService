@@ -1,6 +1,7 @@
 package com.dto.way.member.web.dto;
 
 import com.dto.way.member.domain.entity.Member;
+import com.dto.way.member.domain.entity.MemberStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -19,12 +20,15 @@ public class MemberResponseDTO {
         private JwtToken jwtToken;
     }
 
+    @Getter
+    @Setter
     public static class MemberInfoResponseDTO {
+        private Long memberId;
         private String name;
         private String nickname;
         private String profileImageUrl;
         private String introduce;
-        private String memberStatus;
+        private MemberStatus memberStatus;
         private String phoneNumber;
     }
 }

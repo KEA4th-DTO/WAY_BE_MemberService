@@ -109,6 +109,19 @@ public class MemberController {
     }
 
 
-//    @PostMapping("/member-info")
-//    public ApiResponse<MemberInfoResponseDTO> getMemberInfo(@)
+    @PostMapping("/member-info/{email}")
+    public ApiResponse<MemberInfoResponseDTO> getMemberInfo(@PathVariable String email) {
+        Member member = memberService.findMemberByEmail(email);
+        MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
+
+        memberInfoResponseDTO.setMemberId(member.getId());
+        memberInfoResponseDTO.setName(member.getName());
+        memberInfoResponseDTO.setNickname(member.getNickname());
+        memberInfoResponseDTO.setMemberStatus(member.getMemberStatus());
+        memberInfoResponseDTO.setPhoneNumber(member.getPhoneNumber());
+        memberInfoResponseDTO.setIntroduce(member.getIntroduce());
+        memberInfoResponseDTO.setProfileImageUrl(member.getProfileImageUrl());
+
+        return ApiResponse.of(_OK, memberInfoResponseDTO);
+    }
 }
