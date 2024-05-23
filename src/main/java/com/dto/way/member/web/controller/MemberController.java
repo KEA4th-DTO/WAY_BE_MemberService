@@ -109,6 +109,6 @@ public class MemberController {
     }
 
 
-    @PostMapping("/member-info")
-    public ApiResponse<MemberInfoResponseDTO> getMemberInfo(@)
+//    @PostMapping("/member-info")
+//    public ApiResponse<MemberInfoResponseDTO> getMemberInfo(@)
 }

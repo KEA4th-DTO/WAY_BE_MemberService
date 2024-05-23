@@ -14,8 +14,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .title("WAY NOTIFICATION-SERVICE API")
-                .description("WAY NOTIFICATION-SERVICE API 명세서")
+                .title("WAY MEMBER-SERVICE API")
+                .description("WAY MEMBER-SERVICE API 명세서")
                 .version("1.0.0");
         String jwtSchemeName = "JWT TOKEN";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
