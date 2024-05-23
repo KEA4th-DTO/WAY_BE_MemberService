@@ -110,7 +110,7 @@ public class MemberController {
 
 
     @PostMapping("/member-info/{email}")
-    public ApiResponse<MemberInfoResponseDTO> getMemberInfo(@PathVariable String email) {
+    public MemberInfoResponseDTO getMemberInfo(@PathVariable String email) {
         Member member = memberService.findMemberByEmail(email);
         MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
 
@@ -122,6 +122,6 @@ public class MemberController {
         memberInfoResponseDTO.setIntroduce(member.getIntroduce());
         memberInfoResponseDTO.setProfileImageUrl(member.getProfileImageUrl());
 
-        return ApiResponse.of(_OK, memberInfoResponseDTO);
+        return memberInfoResponseDTO;
     }
 }
