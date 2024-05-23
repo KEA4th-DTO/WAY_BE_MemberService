@@ -4,6 +4,7 @@ import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.service.MemberService;
 import com.dto.way.member.web.dto.JwtToken;
 import com.dto.way.member.web.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @Operation(summary = "회원가입 API", description = "이름, 이메일, 비밀번호, 비밀번호 확인, 닉네임, 전화번호를 request body에 넣어주세요. 필드 값에 따라 정해진 형식에 맞게 넣어야 올바른 응답이 전송됩니다.")
     // 회원가입
     @PostMapping("/signup")
     public ApiResponse<CreateMemberRequestDTO> signUp(@Valid @RequestBody CreateMemberRequestDTO createMemberRequestDTO) {
@@ -46,6 +48,7 @@ public class MemberController {
     }
 
     // 로그인
+    @Operation(summary = "로그인 API", description = "이메일, 비밀번호를 request body에 넣어주세요. 필드 값에 따라 정해진 형식에 맞게 넣어야 올바른 응답이 전송됩니다.")
     @PostMapping("/login")
     public ApiResponse<LoginMemberResponseDTO> login(@Valid @RequestBody LoginMemberRequestDTO loginMemberRequestDTO) {
 
@@ -67,6 +70,7 @@ public class MemberController {
     }
 
     // 로그아웃
+    @Operation(summary = "로그아웃 API", description = "로그아웃 할 사용자의 jwt token 값을 request body에 넣어주세요. 클라이언트에서 token 값을 삭제해야 합니다.")
     @PostMapping("/logout")
     public ApiResponse<JwtToken> logout(@RequestBody JwtToken jwtToken) {
         memberService.logout(jwtToken);
@@ -75,6 +79,7 @@ public class MemberController {
     }
 
     // refresh token을 이용한 토큰 재발급
+    @Operation(summary = "토큰 재발급 API", description = "access token이 만료된 경우 refresh token을 이용하여 jwt token을 재발급 받는 API입니다. jwt token을 request body에 넣어주세요.")
     @PostMapping("/recreate-token")
     public JwtToken recreateToken(@RequestBody JwtToken jwtToken) {
         String refreshToken = jwtToken.getRefreshToken();
@@ -82,6 +87,7 @@ public class MemberController {
     }
 
     // 닉네임 중복 검사
+    @Operation(summary = "닉네임 중복 검사 API", description = "중복 검사 하려는 nickname을 request body에 넣어주세요.")
     @PostMapping("/check-nickname")
     public ApiResponse<Boolean> checkNickname(@RequestBody String nickname) {
         if (memberService.checkNicknameDuplication(nickname)) {
@@ -92,6 +98,7 @@ public class MemberController {
     }
 
     // 이메일 중복 검사
+    @Operation(summary = "이메일 중복 검사 API", description = "중복 검사 하려는 email을 request body에 넣어주세요.")
     @PostMapping("/check-email")
     public ApiResponse<Boolean> checkEmail(@RequestBody String email) {
         if (memberService.checkEmailDuplication(email)) {
@@ -100,4 +107,8 @@ public class MemberController {
             return ApiResponse.onFailure(MEMBER_EMAIL_DUPLICATED.getCode(), MEMBER_EMAIL_DUPLICATED.getMessage(), false);
         }
     }
+
+
+    @PostMapping("/member-info")
+    public ApiResponse<MemberInfoResponseDTO> getMemberInfo(@)
 }

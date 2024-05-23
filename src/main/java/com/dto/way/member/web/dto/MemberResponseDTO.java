@@ -18,4 +18,13 @@ public class MemberResponseDTO {
         private String email;
         private JwtToken jwtToken;
     }
+
+    public static class MemberInfoResponseDTO {
+        private String name;
+        private String nickname;
+        private String profileImageUrl;
+        private String introduce;
+        private String memberStatus;
+        private String phoneNumber;
+    }
 }
