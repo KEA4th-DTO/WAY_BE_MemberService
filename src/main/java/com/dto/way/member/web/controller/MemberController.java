@@ -109,9 +109,9 @@ public class MemberController {
     }
 
 
-    @PostMapping("/member-info/{email}")
-    public MemberInfoResponseDTO getMemberInfo(@PathVariable String email) {
-        Member member = memberService.findMemberByEmail(email);
+    @GetMapping("/member-info/{memberId}")
+    public MemberInfoResponseDTO getMemberInfo(@PathVariable Long memberId) {
+        Member member = memberService.findMemberByMemberId(memberId);
         MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
 
         memberInfoResponseDTO.setMemberId(member.getId());

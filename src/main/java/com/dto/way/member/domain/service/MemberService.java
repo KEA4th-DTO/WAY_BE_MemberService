@@ -89,7 +89,9 @@ public class MemberService {
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+        Long memberId = member.get().getId();
+        String nickname = member.get().getNickname();
+        JwtToken jwtToken = jwtTokenProvider.generateToken(authentication, memberId, nickname);
 
         saveRefreshToken(jwtToken.getRefreshToken(), authentication, Duration.ofDays(1));
 
@@ -174,4 +176,9 @@ public class MemberService {
         return member.orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public Member findMemberByMemberId(Long memberId) {
+        Optional<Member> member = memberRepository.findByMemberId(memberId);
+        return member.orElse(null);
+    }
 }
