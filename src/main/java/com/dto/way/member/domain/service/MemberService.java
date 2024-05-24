@@ -178,7 +178,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Member findMemberByMemberId(Long memberId) {
-        Optional<Member> member = memberRepository.findByMemberId(memberId);
+        Optional<Member> member = memberRepository.findById(memberId);
         return member.orElse(null);
     }
 }
