@@ -89,22 +89,22 @@ public class MemberController {
     // 닉네임 중복 검사
     @Operation(summary = "닉네임 중복 검사 API", description = "중복 검사 하려는 nickname을 request body에 넣어주세요.")
     @PostMapping("/check-nickname")
-    public ApiResponse<CheckNicknameDTO> checkNickname(@Valid @RequestBody CheckNicknameDTO checkNicknameDTO) {
-        if (memberService.checkNicknameDuplication(checkNicknameDTO.getNickname())) {
-            return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), checkNicknameDTO);
+    public ApiResponse<CheckNicknameRequestDTO> checkNickname(@Valid @RequestBody CheckNicknameRequestDTO checkNicknameRequestDTO) {
+        if (memberService.checkNicknameDuplication(checkNicknameRequestDTO.getNickname())) {
+            return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), checkNicknameRequestDTO);
         } else {
-            return ApiResponse.of(_OK, checkNicknameDTO);
+            return ApiResponse.of(_OK, null);
         }
     }
 
     // 이메일 중복 검사
     @Operation(summary = "이메일 중복 검사 API", description = "중복 검사 하려는 email을 request body에 넣어주세요.")
     @PostMapping("/check-email")
-    public ApiResponse<CheckEmailDTO> checkEmail(@Valid @RequestBody CheckEmailDTO checkEmailDTO) {
-        if (memberService.checkEmailDuplication(checkEmailDTO.getEmail())) {
-            return ApiResponse.onFailure(MEMBER_EMAIL_DUPLICATED.getCode(), MEMBER_EMAIL_DUPLICATED.getMessage(), checkEmailDTO);
+    public ApiResponse<CheckEmailRequestDTO> checkEmail(@Valid @RequestBody CheckEmailRequestDTO checkEmailRequestDTO) {
+        if (memberService.checkEmailDuplication(checkEmailRequestDTO.getEmail())) {
+            return ApiResponse.onFailure(MEMBER_EMAIL_DUPLICATED.getCode(), MEMBER_EMAIL_DUPLICATED.getMessage(), checkEmailRequestDTO);
         } else {
-            return ApiResponse.of(_OK, checkEmailDTO);
+            return ApiResponse.of(_OK, null);
         }
     }
 

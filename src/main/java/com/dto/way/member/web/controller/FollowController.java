@@ -42,7 +42,7 @@ public class FollowController {
         NotificationMessage notificationMessage = notificationService.createNotificationMessage(to_user.getNickname(), message);
 
         // Kafka로 메세지 전송
-        notificationService.followNotificationCreate(notificationMessage);
+        // notificationService.followNotificationCreate(notificationMessage);
 
         return ApiResponse.of(_OK, null);
     }

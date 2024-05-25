@@ -58,7 +58,7 @@ public class MemberRequestDTO {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class CheckNicknameDTO {
+    public static class CheckNicknameRequestDTO {
 
         @NotBlank(message = "값을 입력해주세요.")
         @Pattern(regexp="^[A-Za-z0-9._]{5,30}$",
@@ -70,7 +70,7 @@ public class MemberRequestDTO {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class CheckEmailDTO {
+    public static class CheckEmailRequestDTO {
 
         @NotBlank(message = "값을 입력해주세요.")
         @Email(message = "이메일 형식에 맞지 않습니다.")
