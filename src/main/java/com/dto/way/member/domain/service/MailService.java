@@ -20,14 +20,11 @@ public class MailService {
 
     private final JavaMailSender javaMailSender;
     private final CertificationGenerator certificationGenerator;
-    private final RedisService redisService;
 
     public EmailCertificationResponse sendEmailForCertification(String email) throws NoSuchAlgorithmException, MessagingException {
 
         String certificationNumber = certificationGenerator.createCertificationNumber();
         String content = String.format("%s/member-service/verify?certificationNumber=%s&email=%s   해당 링크로 10분 이내에 접속해주세요.", "localhost:8080", certificationNumber, email);
-
-        saveEmailInRedis(email, certificationNumber);
 
         try {
             sendMail(email, content);
@@ -35,28 +32,6 @@ public class MailService {
         } catch (MessagingException e) { // 메일 전송에 실패한 경우
             log.error("메일 전송 실패! 유효하지 않은 이메일: {}", email);
             throw e;
-        }
-    }
-
-    private void saveEmailInRedis(String email, String certificationNumber) {
-        if (redisService.getValues(email).isEmpty()) { // redis 안에 이메일 키가 없다면
-            redisService.setValues(email, certificationNumber, Duration.ofMinutes(10));
-        } else { // redis 안에 이메일 키가 있다면 -> 이미 인증번호 요청을 한 상태이기 때문에 데이터를 삭제하고 다시 만든다.
-            redisService.deleteValues(email);
-            redisService.setValues(email, certificationNumber, Duration.ofMinutes(10));
-        }
-    }
-
-    // 이메일과 인증번호가 일치하는지 검증
-    public boolean verifyEmail(String email, String certificationNumber) {
-        String value = redisService.getValues(email);
-        if (value.isEmpty()) { // 만료된 경우
-            return false;
-        } else { // 만료되지 않은 경우
-            if (value.equals(certificationNumber)) {
-                return true; // 인증번호가 일치하는 경우
-            }
-            return false; // 인증번호가 일치하지 않는 경우
         }
     }
 
