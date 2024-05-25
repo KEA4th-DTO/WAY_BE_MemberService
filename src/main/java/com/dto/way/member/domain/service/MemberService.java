@@ -143,15 +143,12 @@ public class MemberService {
 
     // 닉네임 중복 검사 메소드
     public boolean checkNicknameDuplication(String nickname) {
-        boolean checked = memberRepository.existsByNickname(nickname);
-        // 중복이라면
-        return !checked;
+        return memberRepository.existsByNickname(nickname);
     }
 
     // 이메일 중복 검사 메소드
     public boolean checkEmailDuplication(String email) {
-        boolean checked = memberRepository.existsByEmail(email);
-        return !checked;
+        return memberRepository.existsByEmail(email);
     }
 
     private void saveRefreshToken(String refreshToken, Authentication authentication, Duration duration) {
