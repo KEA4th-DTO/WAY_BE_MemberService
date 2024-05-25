@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.dto.way.member.RedisTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-20T09:05:20" hostname="DESKTOP-N0LCKCJ" time="0.86">
-  <properties/>
-  <testcase name="Redis에 데이터를 저장하면 정상적으로 조회된다." classname="com.dto.way.member.RedisTest" time="0.86"/>
-  <system-out><![CDATA[2024-05-20T18:05:20.455+09:00  INFO 23812 --- [way.member] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.dto.way.member.RedisTest]: RedisTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2024-05-20T18:05:20.457+09:00  INFO 23812 --- [way.member] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.dto.way.member.Application for test class com.dto.way.member.RedisTest
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
