@@ -1,4 +1,0 @@
-# DB keys
-MYSQL_DB_HOST: jdbc:mysql://localhost:3306/way_member
-MYSQL_DB_USER: root
-MYSQL_DB_PASSWORD: 1234
