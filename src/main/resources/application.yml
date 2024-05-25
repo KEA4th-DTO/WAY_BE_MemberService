@@ -1,5 +1,4 @@
 spring:
-
   application:
     name: way.member
 
@@ -22,11 +21,13 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         debug: true
         smtp.auth: true
-        smtp.timeout: 60000 # 60000ms, 1분
+        smtp.timeout: 60000 # 60000ms
         smtp.starttls.enable: true
 
   kafka:

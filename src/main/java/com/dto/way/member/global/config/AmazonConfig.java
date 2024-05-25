@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class AmazonConfig {
 
-
     private AWSCredentials awsCredentials;
 
     @Value("${cloud.aws.credentials.accessKey}")

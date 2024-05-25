@@ -1,6 +1,5 @@
 package com.dto.way.member;
 
-import com.dto.way.member.domain.service.RedisService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
