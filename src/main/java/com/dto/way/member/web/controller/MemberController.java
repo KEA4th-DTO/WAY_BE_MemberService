@@ -110,8 +110,24 @@ public class MemberController {
 
 
     @GetMapping("/member-info/{memberId}")
-    public MemberInfoResponseDTO getMemberInfo(@PathVariable Long memberId) {
+    public MemberInfoResponseDTO getMemberInfoByMemberId(@PathVariable Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
+        MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
+
+        memberInfoResponseDTO.setMemberId(member.getId());
+        memberInfoResponseDTO.setName(member.getName());
+        memberInfoResponseDTO.setNickname(member.getNickname());
+        memberInfoResponseDTO.setMemberStatus(member.getMemberStatus());
+        memberInfoResponseDTO.setPhoneNumber(member.getPhoneNumber());
+        memberInfoResponseDTO.setIntroduce(member.getIntroduce());
+        memberInfoResponseDTO.setProfileImageUrl(member.getProfileImageUrl());
+
+        return memberInfoResponseDTO;
+    }
+
+    @GetMapping("/member-info/{nickname}")
+    public MemberInfoResponseDTO getMemberInfoByNickName(@PathVariable String nickname) {
+        Member member = memberService.findMemberByNickname(nickname);
         MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
 
         memberInfoResponseDTO.setMemberId(member.getId());
