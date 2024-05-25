@@ -1,9 +1,9 @@
 package com.dto.way.member.global;
 
-import com.dto.way.member.web.dto.JwtToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,60 +13,25 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class JwtTokenProvider {
+public class JwtUtils {
 
+    @Value("${jwt.secret}")
+    private String secretKey;
     private final Key key;
 
     // application.yml에서 secret 값 가져와서 key에 저장
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
+    public JwtUtils(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    // Member 정보를 가지고 AccessToken, RefreshToken을 생성하는 메서드
-    public JwtToken generateToken(Authentication authentication, Long memberId, String nickname) {
-        // 권한 가져오기
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
-        log.info("authentification = {}", authentication);
-
-        long now = (new Date()).getTime();
-
-        log.info("authentication.getName() = {}", authentication.getName());
-
-        // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 86400000L * 100); // 30분
-        String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim("auth", authorities)
-                .claim("memberId", memberId)
-                .claim("nickname", nickname)
-                .setExpiration(accessTokenExpiresIn)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-
-        // Refresh Token 생성
-        String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 86400000 * 7)) // 일주일
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-
-        return JwtToken.builder()
-                .grantType("Bearer")
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
     }
 
     // Jwt 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
@@ -113,6 +78,28 @@ public class JwtTokenProvider {
             log.info("JWT claims string is empty.", e);
             return new JwtTokenValidationResult(false, "JWT claims string is empty.");
         }
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    public String getEmailFromToken(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    // 파라미터로 HttpServletRequest를 받아서 memberId 클레임 값을 리턴함.
+    public Long getMemberIdFromRequest(HttpServletRequest request) {
+        String jwtToken = resolveToken(request);
+        if (jwtToken != null) {
+            Claims claims = parseClaims(jwtToken);
+            return claims.get("memberId", Long.class);
+        }
+        return null;
     }
 
     // accessToken
