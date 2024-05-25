@@ -35,7 +35,7 @@ public class MemberController {
 
     //
 
-    @GetMapping("/member-info/{memberId}")
+    @GetMapping("/member-info/id/{memberId}")
     public MemberInfoResponseDTO getMemberInfoByMemberId(@PathVariable Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
         MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
@@ -51,7 +51,7 @@ public class MemberController {
         return memberInfoResponseDTO;
     }
 
-    @GetMapping("/member-info/{nickname}")
+    @GetMapping("/member-info/nickname/{nickname}")
     public MemberInfoResponseDTO getMemberInfoByNickName(@PathVariable String nickname) {
         Member member = memberService.findMemberByNickname(nickname);
         MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
