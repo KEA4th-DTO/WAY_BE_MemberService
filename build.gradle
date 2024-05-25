@@ -27,7 +27,6 @@ ext {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -39,9 +38,6 @@ dependencies {
 
 	// kafka
 	implementation 'org.springframework.kafka:spring-kafka'
-
-	// MySQL
-	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// PostgreSQL
 	implementation 'org.hibernate:hibernate-spatial:6.4.4.Final'

@@ -45,13 +45,13 @@ public class MemberService {
         }
 
         // 이메일 중복 검사
-        if (!checkEmailDuplication(createMemberRequestDTO.getEmail())) {
+        if (checkEmailDuplication(createMemberRequestDTO.getEmail())) {
 
             return MEMBER_EMAIL_DUPLICATED.getCode();
         }
 
         // 닉네임 중복 검사
-        if (!checkNicknameDuplication(createMemberRequestDTO.getNickname())) {
+        if (checkNicknameDuplication(createMemberRequestDTO.getNickname())) {
 
             return MEMBER_NICKNAME_DUPLICATED.getCode();
         }
@@ -135,10 +135,7 @@ public class MemberService {
 
     // 비밀번호와 비밀번화 확인이 같은지 체크하는 메소드
     public boolean checkEqualPassword(CreateMemberRequestDTO createMemberRequestDTO) {
-        if (createMemberRequestDTO.getPassword().equals(createMemberRequestDTO.getPasswordCheck())) {
-            return true; // 일치하는 경우
-        }
-        return false; // 일치하지 않는 경우
+        return createMemberRequestDTO.getPassword().equals(createMemberRequestDTO.getPasswordCheck());
     }
 
     // 닉네임 중복 검사 메소드

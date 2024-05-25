@@ -89,7 +89,7 @@ public class MemberController {
     // 닉네임 중복 검사
     @Operation(summary = "닉네임 중복 검사 API", description = "중복 검사 하려는 nickname을 request body에 넣어주세요.")
     @PostMapping("/check-nickname")
-    public ApiResponse<CheckNicknameRequestDTO> checkNickname(@Valid @RequestBody CheckNicknameRequestDTO checkNicknameRequestDTO) {
+    public ApiResponse<CheckNicknameRequestDTO> checkNickname(@RequestBody CheckNicknameRequestDTO checkNicknameRequestDTO) {
         if (memberService.checkNicknameDuplication(checkNicknameRequestDTO.getNickname())) {
             return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), checkNicknameRequestDTO);
         } else {
@@ -100,7 +100,7 @@ public class MemberController {
     // 이메일 중복 검사
     @Operation(summary = "이메일 중복 검사 API", description = "중복 검사 하려는 email을 request body에 넣어주세요.")
     @PostMapping("/check-email")
-    public ApiResponse<CheckEmailRequestDTO> checkEmail(@Valid @RequestBody CheckEmailRequestDTO checkEmailRequestDTO) {
+    public ApiResponse<CheckEmailRequestDTO> checkEmail(@RequestBody CheckEmailRequestDTO checkEmailRequestDTO) {
         if (memberService.checkEmailDuplication(checkEmailRequestDTO.getEmail())) {
             return ApiResponse.onFailure(MEMBER_EMAIL_DUPLICATED.getCode(), MEMBER_EMAIL_DUPLICATED.getMessage(), checkEmailRequestDTO);
         } else {
