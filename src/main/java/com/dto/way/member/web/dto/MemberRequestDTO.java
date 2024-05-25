@@ -54,4 +54,27 @@ public class MemberRequestDTO {
         // 비밀번호 암호화로 인한 pattern 처리 무효화
         private String password;
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class CheckNicknameDTO {
+
+        @NotBlank(message = "값을 입력해주세요.")
+        @Pattern(regexp="^[A-Za-z0-9._]{5,30}$",
+                message = "닉네임은 영문 대,소문자와 숫자, 특수문자(._)만 가능합니다. 길이는 5자 ~ 30자 입니다.")
+        private String nickname;
+
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class CheckEmailDTO {
+
+        @NotBlank(message = "값을 입력해주세요.")
+        @Email(message = "이메일 형식에 맞지 않습니다.")
+        private String email;
+
+    }
 }

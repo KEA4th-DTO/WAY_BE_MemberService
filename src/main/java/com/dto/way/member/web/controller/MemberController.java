@@ -89,22 +89,22 @@ public class MemberController {
     // 닉네임 중복 검사
     @Operation(summary = "닉네임 중복 검사 API", description = "중복 검사 하려는 nickname을 request body에 넣어주세요.")
     @PostMapping("/check-nickname")
-    public ApiResponse<String> checkNickname(@RequestBody String nickname) {
-        if (!memberService.checkNicknameDuplication(nickname)) {
-            return ApiResponse.of(_OK, "사용 가능한 닉네임 입니다.");
-        } else {
+    public ApiResponse<String> checkNickname(@Valid @RequestBody CheckNicknameDTO checkNicknameDTO) {
+        if (memberService.checkNicknameDuplication(checkNicknameDTO.getNickname())) {
             return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), "이미 사용 중인 닉네임 입니다.");
+        } else {
+            return ApiResponse.of(_OK, "사용 가능한 닉네임 입니다.");
         }
     }
 
     // 이메일 중복 검사
     @Operation(summary = "이메일 중복 검사 API", description = "중복 검사 하려는 email을 request body에 넣어주세요.")
     @PostMapping("/check-email")
-    public ApiResponse<String> checkEmail(@RequestBody String email) {
-        if (!memberService.checkEmailDuplication(email)) {
-            return ApiResponse.of(_OK, "사용 가능한 닉네임 입니다.");
-        } else {
+    public ApiResponse<String> checkEmail(@Valid @RequestBody CheckEmailDTO checkEmailDTO) {
+        if (memberService.checkEmailDuplication(checkEmailDTO.getEmail())) {
             return ApiResponse.onFailure(MEMBER_EMAIL_DUPLICATED.getCode(), MEMBER_EMAIL_DUPLICATED.getMessage(), "이미 사용 중인 이메일 입니다.");
+        } else {
+            return ApiResponse.of(_OK, "사용 가능한 닉네임 입니다.");
         }
     }
 
