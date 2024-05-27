@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: way.member
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRESQL_DB_HOST}
+    username: ${POSTGRESQL_DB_USER}
+    password: ${POSTGRESQL_DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      database: postgresql
+      hibernate:
+        format_sql: true #To beautify or pretty print the SQL
+        show_sql: true #show sql
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        debug: true
+        smtp.auth: true
+        smtp.timeout: 60000 # 60000ms
+        smtp.starttls.enable: true
+
+  kafka:
+    bootstrap-servers: kafka-service:9092
+    template:
+      default-topic: follow
+    consumer:
+      group-id: group-1
+
+cloud:
+  aws:
+    s3:
+      bucket: ${AWS_S3_BUCKET_NAME}
+      path:
+        profile_image: ${AWS_S3_PATH}
+    region:
+      static: ${AWS_S3_REGION}
+    stack:
+      auto: false
+    credentials:
+      accessKey: ${AWS_S3_ACCESS_KEY}
+      secretKey: ${AWS_S3_SECRET_KEY}
+
+springdoc:
+  api-docs:
+    path: /member-service/v3/api-docs
+  swagger-ui:
+    path: /member-service/swagger-ui.html
+
+jwt:
+  secret: ${JWT_SECRET}

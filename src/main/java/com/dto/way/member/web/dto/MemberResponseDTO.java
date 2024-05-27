@@ -5,6 +5,7 @@ import com.dto.way.member.domain.entity.MemberStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,5 +31,28 @@ public class MemberResponseDTO {
         private String introduce;
         private MemberStatus memberStatus;
         private String phoneNumber;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class GetProfileResponseDTO {
+
+        private String name;
+
+        private String profileImageUrl;
+
+        private String introduce;
+
+        private String nickname;
+
+        private Long postCount;
+
+        private Long followingCount;
+
+        private Long followerCount;
+
+        private Boolean isMyProfile;
+
     }
 }

@@ -95,4 +95,17 @@ public class FollowService {
         followRepository.deleteByFromMemberAndToMember(from_member, to_Member);
         return "success";
     }
+
+    // 팔로잉 수를 return
+    @Transactional(readOnly = true)
+    public Long getFollowingCount(Long memberId) {
+        return followRepository.countByToMemberId(memberId);
+    }
+
+
+    // 팔로워 수를 return
+    @Transactional(readOnly = true)
+    public Long getFollowerCount(Long memberId) {
+        return followRepository.countByFromMemberId(memberId);
+    }
 }
