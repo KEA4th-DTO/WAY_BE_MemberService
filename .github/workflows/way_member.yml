@@ -55,7 +55,6 @@ jobs:
         tags: ${{ secrets.PROJECT_NAME }}.kr-central-2.kcr.dev/${{ secrets.REPOSITORY_NAME }}/way-member:${{ github.sha }}
 
   update-deployment-file:
-    
     runs-on: ubuntu-latest
     needs: build-and-push-image
 
