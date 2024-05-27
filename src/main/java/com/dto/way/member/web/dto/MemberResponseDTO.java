@@ -46,7 +46,9 @@ public class MemberResponseDTO {
 
         private String nickname;
 
-        private Long postCount;
+        private Long dailyCount;
+
+        private Long historyCount;
 
         private Long followingCount;
 
@@ -56,3 +58,4 @@ public class MemberResponseDTO {
 
     }
 }
+

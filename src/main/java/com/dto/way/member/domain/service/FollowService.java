@@ -3,7 +3,7 @@ package com.dto.way.member.domain.service;
 import com.dto.way.member.domain.entity.Follow;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.repository.FollowRepository;
-import com.dto.way.member.web.dto.FollowDTO;
+import com.dto.way.member.web.dto.FollowResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.dto.way.member.web.dto.FollowResponseDTO.*;
 import static com.dto.way.member.web.response.code.status.ErrorStatus.*;
 import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
 
@@ -46,48 +47,42 @@ public class FollowService {
     }
 
     @Transactional(readOnly = true)
-    public List<FollowDTO> followingList(Member selectedMember, Member loginMember) {
+    public List<MemberInfoResponseDTO> followingList(Member selectedMember, Member loginMember) {
         List<Follow> list = followRepository.findByFromMember(selectedMember);
 
         return list.stream()
                 .map(follow -> {
-                    FollowDTO followDto = new FollowDTO();
-                    followDto.setName(follow.getToMember().getName());
-                    followDto.setNickname(follow.getToMember().getNickname());
-                    followDto.setProfileImageUrl(follow.getToMember().getProfileImageUrl());
-                    followDto.setStatus(findStatus(selectedMember, loginMember));
-                    return followDto;
+                    MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
+                    memberInfoResponseDTO.setMemberId(follow.getToMember().getId());
+                    memberInfoResponseDTO.setName(follow.getToMember().getName());
+                    memberInfoResponseDTO.setNickname(follow.getToMember().getNickname());
+                    memberInfoResponseDTO.setProfileImageUrl(follow.getToMember().getProfileImageUrl());
+                    return memberInfoResponseDTO;
                 })
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<FollowDTO> followerList(Member selectedMember, Member loginMember) {
+    public List<MemberInfoResponseDTO> followerList(Member selectedMember, Member loginMember) {
         List<Follow> list = followRepository.findByToMember(selectedMember);
 
         return list.stream()
                 .map(follow -> {
-                    FollowDTO followDto = new FollowDTO();
-                    followDto.setName(follow.getFromMember().getName());
-                    followDto.setNickname(follow.getFromMember().getNickname());
-                    followDto.setProfileImageUrl(follow.getFromMember().getProfileImageUrl());
-                    followDto.setStatus(findStatus(selectedMember, loginMember));
-                    return followDto;
+                    MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
+                    memberInfoResponseDTO.setMemberId(follow.getFromMember().getId());
+                    memberInfoResponseDTO.setName(follow.getFromMember().getName());
+                    memberInfoResponseDTO.setNickname(follow.getFromMember().getNickname());
+                    memberInfoResponseDTO.setProfileImageUrl(follow.getFromMember().getProfileImageUrl());
+                    return memberInfoResponseDTO;
                 })
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    protected String findStatus(Member selectedMember, Member loginMember) {
-        if (selectedMember.getEmail().equals(loginMember.getEmail())) {
-            return "self";
-        }
+    public Boolean findStatus(Member loginMember, Member selectedMember) {
 
-        if (followRepository.findFollow(selectedMember, loginMember).isEmpty()) {
-            return "none";
-        }
+        return followRepository.findFollow(loginMember, selectedMember).isPresent();
 
-        return "following";
     }
 
     @Transactional

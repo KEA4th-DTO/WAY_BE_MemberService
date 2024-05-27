@@ -40,7 +40,7 @@ spring:
 cloud:
   aws:
     s3:
-      bucket: ${AWS_S3_BUCKET_NAME}
+
       path:
         profile_image: ${AWS_S3_PATH}
     region:
