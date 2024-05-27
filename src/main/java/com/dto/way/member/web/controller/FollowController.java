@@ -13,14 +13,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
+import static com.dto.way.member.web.response.code.status.ErrorStatus.*;
 
 @Slf4j
 @RestController
@@ -51,7 +49,7 @@ public class FollowController {
         // 닉네임으로 프로필 조회 대상 멤버 정보를 가져옴
         Member loginMember = memberService.findMemberByNickname(loginNickname);
         Member toMember = memberService.findMemberByNickname(nickname);
-        followService.follow(loginMember, toMember);
+        String result = followService.follow(loginMember, toMember);
 
         // 팔로우 알림 메세지 생성
         String message = loginNickname + "님이 회원님을 팔로우하기 시작했습니다.";
@@ -60,7 +58,22 @@ public class FollowController {
         // Kafka로 메세지 전송
         // notificationService.followNotificationCreate(notificationMessage);
 
-        return ApiResponse.of(_OK, null);
+        if (result.equals(FOLLOW_SUCCESS.getCode())) { // 회원가입에 성공한 경우
+            return ApiResponse.of(FOLLOW_SUCCESS, null);
+        }
+
+        else if (result.equals(FOLLOW_CANNOT_SELF.getCode())) { // 본인을 팔로잉 한 경우
+            return ApiResponse.onFailure(FOLLOW_CANNOT_SELF.getCode(), FOLLOW_CANNOT_SELF.getMessage(), null);
+        }
+
+        else if (result.equals(FOLLOW_NOT_DUPLICATED.getCode())) { // 팔로잉 중복인 경우
+            return ApiResponse.onFailure(FOLLOW_NOT_DUPLICATED.getCode(), FOLLOW_NOT_DUPLICATED.getMessage(), null);
+        }
+
+        else {
+            return ApiResponse.onFailure(_BAD_REQUEST.getCode(), _BAD_REQUEST.getMessage(), null);
+        }
+
     }
 
     // 로그인 한 사용자가 본인 혹은 다른 사람의 팔로잉 리스트를 보는 API

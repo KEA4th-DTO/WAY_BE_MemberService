@@ -4,7 +4,6 @@ import com.dto.way.member.domain.entity.Follow;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.repository.FollowRepository;
 import com.dto.way.member.web.dto.FollowDTO;
-import com.dto.way.member.web.exception.FollowException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.dto.way.member.web.response.code.status.ErrorStatus.*;
+import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
 
 @Slf4j
 @Service
@@ -27,12 +27,12 @@ public class FollowService {
 
         // 자기 자신 follow 불가능
         if (from_member == to_member) {
-            throw new FollowException(FOLLOW_CANNOT_SELF);
+            return FOLLOW_CANNOT_SELF.getCode();
         }
 
         // 중복 follow 불가능
         if (followRepository.findFollow(from_member, to_member).isPresent()) {
-            throw new FollowException(FOLLOW_NOT_DUPLICATED);
+            return FOLLOW_NOT_DUPLICATED.getCode();
         }
 
         Follow follow = Follow.builder()
@@ -42,7 +42,7 @@ public class FollowService {
 
         followRepository.save(follow);
 
-        return "success";
+        return FOLLOW_SUCCESS.getCode();
     }
 
     @Transactional(readOnly = true)
