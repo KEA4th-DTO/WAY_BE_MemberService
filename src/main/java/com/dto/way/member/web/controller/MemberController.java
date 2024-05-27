@@ -1,6 +1,7 @@
 package com.dto.way.member.web.controller;
 
 import com.dto.way.member.domain.entity.Member;
+import com.dto.way.member.domain.entity.MemberStatus;
 import com.dto.way.member.domain.service.FollowService;
 import com.dto.way.member.domain.service.MemberService;
 import com.dto.way.member.global.JwtUtils;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.dto.way.member.web.dto.MemberRequestDTO.*;
@@ -126,5 +128,10 @@ public class MemberController {
         memberInfoResponseDTO.setProfileImageUrl(member.getProfileImageUrl());
 
         return memberInfoResponseDTO;
+    }
+
+    @GetMapping("/member-list/{memberStatus}")
+    public List<MemberInfoResponseDTO> getMemberListByMemberStatus(@PathVariable MemberStatus memberStatus) {
+        return memberService.findMembersByMemberStatus(memberStatus);
     }
 }
