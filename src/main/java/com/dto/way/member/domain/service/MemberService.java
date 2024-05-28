@@ -8,6 +8,8 @@ import com.dto.way.member.global.config.AmazonS3Config;
 import com.dto.way.member.web.feign.FeignCilent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,6 +75,7 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public GetProfileResponseDTO createProfile(Member profileMember, Boolean isMyProfile) {
 
         // 팔로잉, 팔로워 수를 가져온다.
@@ -115,5 +118,15 @@ public class MemberService {
 
     public boolean isDefaultProfileImage(String profileImageUrl) {
         return profileImageUrl != null && profileImageUrl.endsWith("default.png");
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Member> findByNicknameContaining (String keyword, Pageable pageable){
+        return memberRepository.findByNicknameContaining(keyword, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Member> findAllMembers(Pageable pageable) {
+        return memberRepository.findAll(pageable);
     }
 }

@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,11 +90,31 @@ public class MemberController {
         }
 
     }
+    @Operation(summary = "사용자 검색 API", description = "키워드가 포함된 닉네임을 가진 유저를 반환합니다. 멤버 리스트, 시작 페이지, 현재 페이지, 마지막 페이지가 반환됩니다.")
+    @GetMapping("/search")
+    public ApiResponse<SearchingResultDTO> searchNickname(HttpServletRequest request,
+                                 @RequestParam String keyword,
+                                 @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-    @GetMapping("/search/{nickname}")
-    public String searchNickname(@RequestParam String keyword, Pageable pageable) {
+        Page<Member> list = null;
 
-        return "ok";
+        if (keyword == null) {  // 검색할 키워드가 들어오지 않은 경우 전체 리스트 출력
+            list = memberService.findAllMembers(pageable);
+        } else {  // 검색할 키워드가 들어온 경우 검색 기능이 포함된 리스트 반환
+            list = memberService.findByNicknameContaining(keyword, pageable);
+        }
+
+        int nowPage = list.getPageable().getPageNumber() + 1; // pageable이 가지고 있는 페이지는 0부터 시작하기때문에 1을 더함
+        int startPage = Math.max(nowPage - 4, 1); // 1보다 작은 경우는 1을 반환
+        int endPage = Math.min(nowPage + 5, list.getTotalPages()); // 전체 페이지보다 많은 경우는 전체 페이지를 반환
+
+        SearchingResultDTO searchingResultDTO = new SearchingResultDTO();
+        searchingResultDTO.setList(list);
+        searchingResultDTO.setNowPage(nowPage);
+        searchingResultDTO.setStartPage(startPage);
+        searchingResultDTO.setEndPage(endPage);
+
+        return ApiResponse.of(_OK, searchingResultDTO);
     }
 
     // 비밀번호 재설정
