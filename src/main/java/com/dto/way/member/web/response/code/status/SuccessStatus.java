@@ -21,6 +21,7 @@ public enum SuccessStatus implements BaseCode {
     MEMBER_SIGNUP(HttpStatus.OK, "MEMBER2005", "회원가입 성공"),
     MEMBER_LOGIN(HttpStatus.OK, "MEMBER2006", "로그인 성공"),
     MEMBER_LOGOUT(HttpStatus.OK, "MEMBER2007", "로그아웃 성공"),
+    MEMBER_UPDATE_PROFILE(HttpStatus.OK, "MEMBER2008", "프로필 수정 성공"),
 
     // 팔로우 관련 응답
     FOLLOW_SUCCESS(HttpStatus.OK, "FOLLOW2001", "팔로잉 성공"),

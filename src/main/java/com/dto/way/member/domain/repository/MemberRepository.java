@@ -3,8 +3,11 @@ package com.dto.way.member.domain.repository;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.entity.MemberStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +24,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT m FROM Member m WHERE m.memberStatus = :memberStatus")
     List<Member> findByMemberStatus(MemberStatus memberStatus);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Member m SET m.nickname = :nickname, m.introduce = :introduce, m.profileImageUrl = :profileImageUrl WHERE m.id = :id")
+    int updateMemberProfile(@Param("id") Long id, @Param("nickname") String nickname, @Param("introduce") String introduce, @Param("profileImageUrl") String profileImageUrl);
 
     boolean existsByNickname(String nickname);
 

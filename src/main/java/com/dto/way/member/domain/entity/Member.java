@@ -58,6 +58,8 @@ public class Member implements UserDetails {
 
     private LocalDateTime updatedAt;
 
+    private
+
     @OneToMany(mappedBy = "fromMember", fetch = FetchType.LAZY)
     private List<Follow> followingList;
 

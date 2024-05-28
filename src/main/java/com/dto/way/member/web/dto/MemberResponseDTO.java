@@ -46,9 +46,9 @@ public class MemberResponseDTO {
 
         private String nickname;
 
-        private Long dailyCount;
+        private Integer dailyCount;
 
-        private Long historyCount;
+        private Integer historyCount;
 
         private Long followingCount;
 

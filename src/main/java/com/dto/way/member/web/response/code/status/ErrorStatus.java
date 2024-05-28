@@ -26,6 +26,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 로그인 응답
     MEMBER_LOGIN_FAILED(HttpStatus.BAD_REQUEST, "LOGIN4001", "아이디 또는 비밀번호가 일치하지 않습니다."),
 
+    // 멤버 응답
+    MEMBER_UPDATE_FAILED(HttpStatus.BAD_REQUEST, "MEMBER4001", "본인의 프로필만 수정이 가능합니다."),
+
     // 이메일 인증 응답
     EMAIL_NOT_VERIFIED(HttpStatus.BAD_REQUEST, "EMAIL4001", "인증번호가 일치하지 않습니다."),
 
