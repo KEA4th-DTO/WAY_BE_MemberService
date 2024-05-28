@@ -5,9 +5,11 @@ import com.dto.way.member.domain.entity.MemberStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 
 public class MemberResponseDTO {
 
@@ -55,6 +57,17 @@ public class MemberResponseDTO {
         private Long followerCount;
 
         private Boolean isMyProfile;
+
+    }
+
+    @Getter
+    @Setter
+    public static class SearchingResultDTO {
+
+        private Page<Member> list;
+        private int nowPage;
+        private int startPage;
+        private int endPage;
 
     }
 }
