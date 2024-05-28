@@ -90,21 +90,9 @@ public class MemberController {
     }
 
     @GetMapping("/search/{nickname}")
-    public String board(@RequestParam String keyword, Pageable pageable) {
-        Page<Member> exPage = null;
-        테이블 선언 (ex : Storage storage);
-        if(keyword.isEmpty()){
-            검색 안할 때 로직
-            exPage = exService.findBy컬럼명Containing(keyword, pageable);
-            log.info("검색하여 불러오는 리스트 확인 = {}", exPage.getContent());
-        }
+    public String searchNickname(@RequestParam String keyword, Pageable pageable) {
 
-        List<Object> list = new ArrayList<>();
-        Gson gson = new Gson();
-        String pageGson = gson.toJson(exPage);
-        log.info("Gson 변환 후 확인 = {}", pageGson);
-
-        return pageGson;
+        return "ok";
     }
 
     // 비밀번호 재설정

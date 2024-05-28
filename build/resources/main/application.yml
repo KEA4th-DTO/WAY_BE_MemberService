@@ -37,10 +37,20 @@ spring:
     consumer:
       group-id: group-1
 
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+
+config:
+  feign:
+    post-url: http://210.109.55.124/post-service/
+
 cloud:
   aws:
     s3:
-
+      bucket: ${AWS_S3_BUCKET_NAME}
       path:
         profile_image: ${AWS_S3_PATH}
     region:
