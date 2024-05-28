@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,9 +51,7 @@ public class MemberController {
 
             GetProfileResponseDTO profile = memberService.createProfile(profileMember, true);
             return ApiResponse.of(_OK, profile);
-        }
-
-        else { // 남의 프로필 조회인 경우
+        } else { // 남의 프로필 조회인 경우
 
             GetProfileResponseDTO profile = memberService.createProfile(profileMember, false);
             return ApiResponse.of(_OK, profile);
@@ -71,7 +71,7 @@ public class MemberController {
         Claims claims = jwtUtils.parseClaims(token);
 
         Long loginMemberId = claims.get("memberId", Long.class);
-        log.info("loginMemberId " +  claims.get("memberId"));
+        log.info("loginMemberId " + claims.get("memberId"));
 
         // 닉네임으로 프로필 조회 대상 멤버 정보를 가져옴
         Member profileMember = memberService.findMemberByNickname(nickname);
@@ -87,6 +87,24 @@ public class MemberController {
             return ApiResponse.onFailure(MEMBER_UPDATE_FAILED.getCode(), MEMBER_UPDATE_FAILED.getMessage(), null);
         }
 
+    }
+
+    @GetMapping("/search/{nickname}")
+    public String board(@RequestParam String keyword, Pageable pageable) {
+        Page<Member> exPage = null;
+        테이블 선언 (ex : Storage storage);
+        if(keyword.isEmpty()){
+            검색 안할 때 로직
+            exPage = exService.findBy컬럼명Containing(keyword, pageable);
+            log.info("검색하여 불러오는 리스트 확인 = {}", exPage.getContent());
+        }
+
+        List<Object> list = new ArrayList<>();
+        Gson gson = new Gson();
+        String pageGson = gson.toJson(exPage);
+        log.info("Gson 변환 후 확인 = {}", pageGson);
+
+        return pageGson;
     }
 
     // 비밀번호 재설정

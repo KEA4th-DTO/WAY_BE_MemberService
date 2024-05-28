@@ -58,7 +58,10 @@ public class Member implements UserDetails {
 
     private LocalDateTime updatedAt;
 
-    private
+    @ElementCollection
+    @CollectionTable(name = "waytag", joinColumns = @JoinColumn(name = "member_id"))
+    @Column(name = "tags")
+    private List<String> tags;
 
     @OneToMany(mappedBy = "fromMember", fetch = FetchType.LAZY)
     private List<Follow> followingList;
