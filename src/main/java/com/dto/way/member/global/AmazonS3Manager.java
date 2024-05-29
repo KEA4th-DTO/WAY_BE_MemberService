@@ -70,17 +70,26 @@ public class AmazonS3Manager {
         String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8);
         String key = decodedPath.substring(1); // 첫 번째 슬래시를 제거하여 객체 키를 얻습니다.
 
-        S3Object s3Object = amazonS3.getObject(new GetObjectRequest(amazonS3Config.getBucket(), key));
-        S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
-        byte[] bytes = IOUtils.toByteArray(objectInputStream);
+        try {
+            S3Object s3Object = amazonS3.getObject(new GetObjectRequest(amazonS3Config.getBucket(), key));
+            S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
+            byte[] bytes = IOUtils.toByteArray(objectInputStream);
 
-        String fileName = URLEncoder.encode(key, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        httpHeaders.setContentLength(bytes.length);
-        httpHeaders.setContentDispositionFormData("attachment", fileName);
+            String fileName = URLEncoder.encode(key, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            httpHeaders.setContentLength(bytes.length);
+            httpHeaders.setContentDispositionFormData("attachment", fileName);
 
-        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
+        } catch (AmazonS3Exception e) {
+            // Log the exception and return null if the object does not exist
+            if (e.getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e; // Re-throw the exception for other status codes
+            }
+        }
     }
 
 }

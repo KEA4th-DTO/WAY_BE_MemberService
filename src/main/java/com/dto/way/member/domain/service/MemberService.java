@@ -131,7 +131,7 @@ public class MemberService {
     }
 
     public String saveAiImage(MultipartFile aiImage, Long memberId) throws IOException {
-        String imageUrl = amazonS3Config.getAiImagePath() + "/" + "ai_image_" + memberId;
+        String imageUrl = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/" + amazonS3Config.getAiImagePath() + "/" + "ai_image_" + memberId + ".png";
 
         ResponseEntity<byte[]> objectByUrl = amazonS3Manager.getObjectByUrl(imageUrl);
         if (objectByUrl == null) {
