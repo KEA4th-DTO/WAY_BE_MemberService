@@ -121,7 +121,7 @@ public class MemberService {
         }
 
         // 이미지를 S3에 저장, 파일 이름은 email로 지정
-        String newImageUrl = amazonS3Manager.uploadFileToDirectory(amazonS3Config.getProfileImagePath(), profileMember.getEmail(), profileImage);
+        String newImageUrl = amazonS3Manager.uploadFileToDirectory(amazonS3Config.getProfileImagePath(), profileMember.getEmail() + ".png", profileImage);
 
         Long memberId = profileMember.getId();
         String introduce = updateProfileRequestDTO.getIntroduce();
@@ -135,10 +135,10 @@ public class MemberService {
 
         ResponseEntity<byte[]> objectByUrl = amazonS3Manager.getObjectByUrl(imageUrl);
         if (objectByUrl == null) {
-            amazonS3Manager.uploadFileToDirectory(amazonS3Config.getAiImagePath(), "ai_image_" + memberId, aiImage);
+            amazonS3Manager.uploadFileToDirectory(amazonS3Config.getAiImagePath(), "ai_image_" + memberId + ".png", aiImage);
         } else {
             amazonS3Manager.deleteFile(imageUrl);
-            amazonS3Manager.uploadFileToDirectory(amazonS3Config.getAiImagePath(), "ai_image_" + memberId, aiImage);
+            amazonS3Manager.uploadFileToDirectory(amazonS3Config.getAiImagePath(), "ai_image_" + memberId + ".png", aiImage);
         }
 
         return imageUrl;
@@ -146,7 +146,7 @@ public class MemberService {
 
     @Transactional
     public String saveTextURL(Long memberId) throws IOException {
-        String textURL = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/ai_text/text_member_id_" + memberId;
+        String textURL = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/ai_text/text_member_id_" + memberId +".txt";
 
         memberRepository.updateMemberTextUrlById(memberId, textURL);
 
@@ -158,13 +158,21 @@ public class MemberService {
         CompletableFuture<String> future = new CompletableFuture<>();
 
         try {
+            // FeignClient 호출 및 응답 로그
             List<String> tags = aiFeignClient.getUserTags(userId, imageUrl, textUrl);
-            tagRepository.updateTagWayTagsByMemberId(userId, tags.get(0), tags.get(1), tags.get(2));
+            log.info("Received tags: {}", tags);
 
-            log.info("Tags updated successfully");
+            // Repository 업데이트 로그
+            tagRepository.updateTagWayTagsByMemberId(userId, tags.get(0), tags.get(1), tags.get(2));
+            log.info("Tags updated successfully for userId: {}", userId);
+
+            // 성공 메시지 설정
             future.complete("Tags updated successfully");
         } catch (Exception e) {
-            log.info("Tags updated failed");
+            // 예외 로그
+            log.error("Failed to update tags for userId: {}", userId, e);
+
+            // 예외 설정
             future.completeExceptionally(e);
         }
 
