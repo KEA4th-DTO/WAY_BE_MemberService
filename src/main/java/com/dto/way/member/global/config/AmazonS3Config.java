@@ -31,7 +31,10 @@ public class AmazonS3Config {
     private String bucket;
 
     @Value("${cloud.aws.s3.path.profile_image}")
-    private String dailyImagePath;
+    private String profileImagePath;
+
+    @Value("${cloud.aws.s3.path.ai_image}")
+    private String aiImagePath;
 
     @PostConstruct
     public void init() {

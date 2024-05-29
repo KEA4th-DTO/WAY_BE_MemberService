@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public class MemberResponseDTO {
 
     @Getter
@@ -55,6 +57,8 @@ public class MemberResponseDTO {
         private Long followingCount;
 
         private Long followerCount;
+
+        private List<String> wayTags;
 
         private Boolean isMyProfile;
 

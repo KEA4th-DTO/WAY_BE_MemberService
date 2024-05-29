@@ -3,15 +3,13 @@ package com.dto.way.member.web.controller;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.entity.MemberStatus;
 import com.dto.way.member.domain.service.MemberService;
+import com.dto.way.member.global.AmazonS3Manager;
 import com.dto.way.member.global.JwtUtils;
 import com.dto.way.member.web.dto.MemberResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

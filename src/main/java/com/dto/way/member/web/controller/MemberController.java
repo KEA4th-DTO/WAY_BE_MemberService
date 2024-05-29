@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 import static com.dto.way.member.web.dto.MemberRequestDTO.*;
 import static com.dto.way.member.web.dto.MemberResponseDTO.*;
@@ -90,11 +91,11 @@ public class MemberController {
         }
 
     }
+
     @Operation(summary = "사용자 검색 API", description = "키워드가 포함된 닉네임을 가진 유저를 반환합니다. 멤버 리스트, 시작 페이지, 현재 페이지, 마지막 페이지가 반환됩니다.")
     @GetMapping("/search")
-    public ApiResponse<SearchingResultDTO> searchNickname(HttpServletRequest request,
-                                 @RequestParam String keyword,
-                                 @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ApiResponse<SearchingResultDTO> searchNickname(@RequestParam String keyword,
+                                                          @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Member> list = null;
 
@@ -116,6 +117,26 @@ public class MemberController {
 
         return ApiResponse.of(_OK, searchingResultDTO);
     }
+
+    @PostMapping("/mymap-image")
+    public ApiResponse saveMymapImage(HttpServletRequest request,
+                                      @RequestPart(value = "myMapImage") MultipartFile myMapImage) throws IOException {
+
+        // 토큰에서 요청 유저 정보 추출
+        String token = jwtUtils.resolveToken(request);
+        Claims claims = jwtUtils.parseClaims(token);
+
+        Long loginMemberId = claims.get("memberId", Long.class);
+        log.info("loginMemberId " + claims.get("memberId"));
+
+        String imageUrl = memberService.saveAiImage(myMapImage, loginMemberId);
+        String textUrl = memberService.saveTextURL(loginMemberId);
+
+        memberService.requestWayTags(loginMemberId, imageUrl, textUrl);
+
+        return ApiResponse.of(_OK, null);
+    }
+
 
     // 비밀번호 재설정
 //    @PostMapping("/change/password")

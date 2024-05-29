@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NotificationMessage {
 
+    private Long memberId;
     private String message;
     private String sendedMember;
     private LocalDateTime createdAt;

@@ -32,6 +32,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("UPDATE Member m SET m.nickname = :nickname, m.introduce = :introduce, m.profileImageUrl = :profileImageUrl WHERE m.id = :id")
     int updateMemberProfile(@Param("id") Long id, @Param("nickname") String nickname, @Param("introduce") String introduce, @Param("profileImageUrl") String profileImageUrl);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Member m SET m.textURL = :newTextUrl WHERE m.id = :memberId")
+    void updateMemberTextUrlById(Long memberId, String newTextUrl);
 
     Page<Member> findByNicknameContaining(String keyword, Pageable pageable);
     boolean existsByNickname(String nickname);

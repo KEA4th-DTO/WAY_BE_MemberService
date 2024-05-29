@@ -54,8 +54,8 @@ public class FollowController {
         String message = loginNickname + "님이 회원님을 팔로우하기 시작했습니다.";
         NotificationMessage notificationMessage = notificationService.createNotificationMessage(toMember.getNickname(), message);
 
-        // Kafka로 메세지 전송
-        // notificationService.followNotificationCreate(notificationMessage);
+         // Kafka로 메세지 전송
+         notificationService.followNotificationCreate(notificationMessage);
 
         if (result.equals(FOLLOW_SUCCESS.getCode())) { // 회원가입에 성공한 경우
             return ApiResponse.of(FOLLOW_SUCCESS, null);
