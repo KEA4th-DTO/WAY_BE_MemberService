@@ -6,6 +6,7 @@ import com.dto.way.member.domain.repository.MemberRepository;
 import com.dto.way.member.domain.repository.TagRepository;
 import com.dto.way.member.global.AmazonS3Manager;
 import com.dto.way.member.global.config.AmazonS3Config;
+import com.dto.way.member.web.dto.UserTagRequestDTO;
 import com.dto.way.member.web.feign.AiFeignClient;
 import com.dto.way.member.web.feign.PostFeignCilent;
 import lombok.RequiredArgsConstructor;
@@ -158,8 +159,10 @@ public class MemberService {
         CompletableFuture<String> future = new CompletableFuture<>();
 
         try {
+
+            UserTagRequestDTO userTagRequestDTO = new UserTagRequestDTO(userId, imageUrl, textUrl);
             // FeignClient 호출 및 응답 로그
-            List<String> tags = aiFeignClient.getUserTags(userId, imageUrl, textUrl);
+            List<String> tags = aiFeignClient.getUserTags(userTagRequestDTO);
             log.info("Received tags: {}", tags);
 
             // Repository 업데이트 로그
@@ -184,12 +187,22 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Member> findByNicknameContaining (String keyword, Pageable pageable){
-        return memberRepository.findByNicknameContaining(keyword, pageable);
+    public Page<SearchingMemberDTO> findByNicknameContaining(String keyword, Pageable pageable) {
+        // 멤버 리스트를 검색하고 페이징하여 가져옵니다.
+        Page<Member> members = memberRepository.findByNicknameContaining(keyword, pageable);
+
+        // 멤버 리스트를 Stream으로 변환하고 각 멤버를 SearchingMemberDTO로 매핑합니다.
+        Page<SearchingMemberDTO> list = members.map(this::mapToSearchingMemberDTO);
+
+        // 매핑된 결과를 반환합니다.
+        return list;
     }
 
-    @Transactional(readOnly = true)
-    public Page<Member> findAllMembers(Pageable pageable) {
-        return memberRepository.findAll(pageable);
+    private SearchingMemberDTO mapToSearchingMemberDTO(Member member) {
+        SearchingMemberDTO searchingMemberDTO = new SearchingMemberDTO();
+        searchingMemberDTO.setProfileImageUrl(member.getProfileImageUrl());
+        searchingMemberDTO.setNickname(member.getNickname());
+        searchingMemberDTO.setIntroduce(member.getIntroduce());
+        return searchingMemberDTO;
     }
 }

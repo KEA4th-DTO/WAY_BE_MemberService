@@ -97,10 +97,10 @@ public class MemberController {
     public ApiResponse<SearchingResultDTO> searchNickname(@RequestParam String keyword,
                                                           @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Member> list = null;
+        Page<SearchingMemberDTO> list = null;
 
-        if (keyword == null) {  // 검색할 키워드가 들어오지 않은 경우 전체 리스트 출력
-            list = memberService.findAllMembers(pageable);
+        if (keyword == null) {  // 검색할 키워드가 들어오지 않은 경우 빈 리스트를 출력
+            list = null;
         } else {  // 검색할 키워드가 들어온 경우 검색 기능이 포함된 리스트 반환
             list = memberService.findByNicknameContaining(keyword, pageable);
         }

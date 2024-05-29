@@ -66,9 +66,19 @@ public class MemberResponseDTO {
 
     @Getter
     @Setter
+    public static class SearchingMemberDTO {
+
+        private String profileImageUrl;
+        private String nickname;
+        private String introduce;
+
+    }
+
+    @Getter
+    @Setter
     public static class SearchingResultDTO {
 
-        private Page<Member> list;
+        private Page<SearchingMemberDTO> list;// 프로필 이미지, 닉네임, 한줄소개,
         private int nowPage;
         private int startPage;
         private int endPage;

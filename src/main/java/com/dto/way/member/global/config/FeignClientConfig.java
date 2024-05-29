@@ -14,11 +14,18 @@ public class FeignClientConfig {
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = attributes.getRequest();
-            String token = request.getHeader("Authorization");
-            requestTemplate.header("Authorization", token);
+
+            // Check if attributes are null (which they might be in an async context)
+            if (attributes != null) {
+                HttpServletRequest request = attributes.getRequest();
+                String token = request.getHeader("Authorization");
+
+                // Only add the header if it is not null
+                if (token != null) {
+                    requestTemplate.header("Authorization", token);
+                }
+            }
         };
     }
-
 
 }
