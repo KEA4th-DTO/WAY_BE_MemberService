@@ -2,9 +2,11 @@ package com.dto.way.member.domain.repository;
 
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.entity.Tag;
+import com.dto.way.member.web.dto.TagDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +15,10 @@ import java.util.List;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    @Query("SELECT t FROM Tag t WHERE t.taggedMember = :member")
-    List<String> findTagsByMember(Member member);
+    @Query("SELECT t.wayTag1, t.wayTag2, t.wayTag3 FROM Tag t WHERE t.taggedMember = :member")
+    List<Object[]> findTagsByMember(@Param("member") Member member);
+
+
 
     @Transactional
     @Modifying

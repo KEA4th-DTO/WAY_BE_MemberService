@@ -6,6 +6,7 @@ import com.dto.way.member.domain.repository.MemberRepository;
 import com.dto.way.member.domain.repository.TagRepository;
 import com.dto.way.member.global.AmazonS3Manager;
 import com.dto.way.member.global.config.AmazonS3Config;
+import com.dto.way.member.web.dto.TagDTO;
 import com.dto.way.member.web.dto.UserTagRequestDTO;
 import com.dto.way.member.web.feign.AiFeignClient;
 import com.dto.way.member.web.feign.PostFeignCilent;
@@ -84,6 +85,32 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    public List<TagDTO> getTagsByMember(Member member) {
+        List<Object[]> tagObjects = tagRepository.findTagsByMember(member);
+        return tagObjects.stream()
+                .map(objects -> new TagDTO((String) objects[0], (String) objects[1], (String) objects[2]))
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getTagStringsByMember(Member member) {
+        List<TagDTO> tagsByMember = getTagsByMember(member);
+        List<String> tagStrings = new ArrayList<>();
+
+        for (TagDTO tagDTO : tagsByMember) {
+            if (tagDTO.getWayTag1() != null) {
+                tagStrings.add(tagDTO.getWayTag1());
+            }
+            if (tagDTO.getWayTag2() != null) {
+                tagStrings.add(tagDTO.getWayTag2());
+            }
+            if (tagDTO.getWayTag3() != null) {
+                tagStrings.add(tagDTO.getWayTag3());
+            }
+        }
+
+        return tagStrings;
+    }
+
     @Transactional
     public GetProfileResponseDTO createProfile(Member profileMember, Boolean isMyProfile) {
 
@@ -94,7 +121,7 @@ public class MemberService {
         PostCountDTO postsCount = postFeignCilent.getPostsCount(profileMember.getId());
 
         // 웨이태그를 불러와 List로 만든다.
-        List<String> tags = tagRepository.findTagsByMember(profileMember);
+        List<String> tags = getTagStringsByMember(profileMember);
 
         // 프로필을 만든다.
         return GetProfileResponseDTO.builder()
