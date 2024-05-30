@@ -23,7 +23,7 @@ public class FeignController {
 
     private final MemberService memberService;
 
-    @Operation(summary = "멤버정보 조회 API", description = "path variable에 조회하고 싶은 멤버의 memberId를 넣어주세요.")
+    @Operation(summary = "멤버정보 조회 API", description = "(프론트 사용 X) path variable에 조회하고 싶은 멤버의 memberId를 넣어주세요.")
     @GetMapping("/member-info/id/{memberId}")
     public MemberInfoResponseDTO getMemberInfoByMemberId(@PathVariable Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
@@ -40,7 +40,7 @@ public class FeignController {
         return memberInfoResponseDTO;
     }
 
-    @Operation(summary = "멤버정보 조회 API", description = "path variable에 조회하고 싶은 멤버의 nickname을 넣어주세요.")
+    @Operation(summary = "멤버정보 조회 API", description = "(프론트 사용 X) path variable에 조회하고 싶은 멤버의 nickname을 넣어주세요.")
     @GetMapping("/member-info/nickname/{nickname}")
     public MemberInfoResponseDTO getMemberInfoByNickName(@PathVariable String nickname) {
         Member member = memberService.findMemberByNickname(nickname);
@@ -57,7 +57,7 @@ public class FeignController {
         return memberInfoResponseDTO;
     }
 
-    @Operation(summary = "memberStatus로 멤버목록을 조회하는 API", description = "path variable에 memberStatus를 넣어주세요.")
+    @Operation(summary = "memberStatus로 멤버목록을 조회하는 API", description = "(프론트 사용 X) path variable에 memberStatus를 넣어주세요.")
     @GetMapping("/member-list/{memberStatus}")
     public List<MemberInfoResponseDTO> getMemberListByMemberStatus(@PathVariable MemberStatus memberStatus) {
         return memberService.findMembersByMemberStatus(memberStatus);

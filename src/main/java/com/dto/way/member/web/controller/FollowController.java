@@ -92,7 +92,7 @@ public class FollowController {
         Member loginMember = memberService.findMemberByNickname(loginNickname);
         Member from_member = memberService.findMemberByNickname(nickname);
 
-        List<MemberInfoResponseDTO> followingList = followService.followingList(from_member, loginMember);
+        List<MemberInfoResponseDTO> followingList = followService.followingList(from_member);
 
         List<FollowListResponseDTO> list = followingList.stream().map(following -> {
             Long memberId = following.getMemberId();
@@ -124,7 +124,7 @@ public class FollowController {
         // 닉네임으로 로그인한 유저 정보를 가져옴.
         Member loginMember = memberService.findMemberByNickname(loginNickname);
         Member toMember = memberService.findMemberByNickname(nickname);
-        List<MemberInfoResponseDTO> followerList = followService.followerList(toMember, loginMember);
+        List<MemberInfoResponseDTO> followerList = followService.followerList(toMember);
 
 //        List<FollowListResponseDTO> list = new ArrayList<>();
 //        for (int i = 0; i < followerList.size(); i++) {

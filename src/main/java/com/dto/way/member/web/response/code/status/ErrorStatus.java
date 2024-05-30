@@ -37,7 +37,12 @@ public enum ErrorStatus implements BaseErrorCode {
     FOLLOW_NOT_DUPLICATED(HttpStatus.BAD_REQUEST, "FOLLOW4002", "이미 팔로잉 한 유저 입니다."),
 
     // 알림 응답
-    NOTIFICATION_NOT_SENDED(HttpStatus.BAD_REQUEST, "NOTIFICATION4001", "알림 메세지가 전달되지 않았습니다.");
+    NOTIFICATION_NOT_SENDED(HttpStatus.BAD_REQUEST, "NOTIFICATION4001", "알림 메세지가 전달되지 않았습니다."),
+
+    // 검색 응답
+    SEARCH_KEYWORD_NOT_NULL(HttpStatus.BAD_REQUEST, "SEARCH4001", "검색어를 입력해주세요."),
+    SEARCH_RESULT_NULL(HttpStatus.BAD_REQUEST, "SEARCH4002", "검색 결과가 없습니다."),
+
 
     ;
 

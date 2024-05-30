@@ -3,6 +3,7 @@ package com.dto.way.member.domain.repository;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.entity.MemberStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -37,7 +38,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("UPDATE Member m SET m.textURL = :newTextUrl WHERE m.id = :memberId")
     void updateMemberTextUrlById(Long memberId, String newTextUrl);
 
-    Page<Member> findByNicknameContaining(String keyword, Pageable pageable);
+    Page<Member> findByNicknameContaining(PageRequest pageRequest, String nickname);
+
     boolean existsByNickname(String nickname);
 
     boolean existsByEmail(String email);

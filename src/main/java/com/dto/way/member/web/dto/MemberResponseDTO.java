@@ -5,10 +5,7 @@ import com.dto.way.member.domain.entity.MemberStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -65,8 +62,10 @@ public class MemberResponseDTO {
     }
 
     @Getter
-    @Setter
-    public static class SearchingMemberDTO {
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberSearchResultDTO {
 
         private String profileImageUrl;
         private String nickname;
@@ -75,13 +74,17 @@ public class MemberResponseDTO {
     }
 
     @Getter
-    @Setter
-    public static class SearchingResultDTO {
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberSearchResultListDTO {
 
-        private Page<SearchingMemberDTO> list;// 프로필 이미지, 닉네임, 한줄소개,
-        private int nowPage;
-        private int startPage;
-        private int endPage;
+        private List<MemberSearchResultDTO> list;// 프로필 이미지, 닉네임, 한줄소개,
+        private Integer listSize;
+        private Integer totalPage;
+        private Long totalElements;
+        private Boolean isFirst;
+        private Boolean isLast;
 
     }
 }

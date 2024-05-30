@@ -13,6 +13,7 @@ import com.dto.way.member.web.feign.PostFeignCilent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -189,7 +190,7 @@ public class MemberService {
 
             UserTagRequestDTO userTagRequestDTO = new UserTagRequestDTO(userId, imageUrl, textUrl);
             // FeignClient 호출 및 응답 로그
-            List<String> tags = aiFeignClient.getUserTags(userTagRequestDTO);
+            List<String> tags = aiFeignClient.getUserTags(userTagRequestDTO.getUserId(), userTagRequestDTO.getImageUrl(), userTagRequestDTO.getTextUrl());
             log.info("Received tags: {}", tags);
 
             // Repository 업데이트 로그
@@ -214,22 +215,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Page<SearchingMemberDTO> findByNicknameContaining(String keyword, Pageable pageable) {
-        // 멤버 리스트를 검색하고 페이징하여 가져옵니다.
-        Page<Member> members = memberRepository.findByNicknameContaining(keyword, pageable);
-
-        // 멤버 리스트를 Stream으로 변환하고 각 멤버를 SearchingMemberDTO로 매핑합니다.
-        Page<SearchingMemberDTO> list = members.map(this::mapToSearchingMemberDTO);
-
-        // 매핑된 결과를 반환합니다.
-        return list;
-    }
-
-    private SearchingMemberDTO mapToSearchingMemberDTO(Member member) {
-        SearchingMemberDTO searchingMemberDTO = new SearchingMemberDTO();
-        searchingMemberDTO.setProfileImageUrl(member.getProfileImageUrl());
-        searchingMemberDTO.setNickname(member.getNickname());
-        searchingMemberDTO.setIntroduce(member.getIntroduce());
-        return searchingMemberDTO;
+    public Page<Member> findByNicknameContaining(Integer page, String keyword) {
+        return memberRepository.findByNicknameContaining(PageRequest.of(page, 10), keyword);
     }
 }

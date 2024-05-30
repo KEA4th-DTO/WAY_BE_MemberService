@@ -32,22 +32,22 @@ public class FollowService {
         }
 
         // 중복 follow 불가능
-        if (followRepository.findFollow(from_member, to_member).isPresent()) {
+        else if (followRepository.findFollow(from_member, to_member).isPresent()) {
             return FOLLOW_NOT_DUPLICATED.getCode();
+        } else {
+            Follow follow = Follow.builder()
+                    .toMember(to_member)
+                    .fromMember(from_member)
+                    .build();
+
+            followRepository.save(follow);
+
+            return FOLLOW_SUCCESS.getCode();
         }
-
-        Follow follow = Follow.builder()
-                .toMember(to_member)
-                .fromMember(from_member)
-                .build();
-
-        followRepository.save(follow);
-
-        return FOLLOW_SUCCESS.getCode();
     }
 
     @Transactional(readOnly = true)
-    public List<MemberInfoResponseDTO> followingList(Member selectedMember, Member loginMember) {
+    public List<MemberInfoResponseDTO> followingList(Member selectedMember) {
         List<Follow> list = followRepository.findByFromMember(selectedMember);
 
         return list.stream()
@@ -63,7 +63,7 @@ public class FollowService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberInfoResponseDTO> followerList(Member selectedMember, Member loginMember) {
+    public List<MemberInfoResponseDTO> followerList(Member selectedMember) {
         List<Follow> list = followRepository.findByToMember(selectedMember);
 
         return list.stream()
@@ -91,16 +91,16 @@ public class FollowService {
         return "success";
     }
 
-    // 팔로잉 수를 return
+    // 팔로워 수를 return
     @Transactional(readOnly = true)
     public Long getFollowingCount(Long memberId) {
+        return followRepository.countByFromMemberId(memberId);
+    }
+
+    // 팔로잉 수를 return
+    @Transactional(readOnly = true)
+    public Long getFollowerCount(Long memberId) {
         return followRepository.countByToMemberId(memberId);
     }
 
-
-    // 팔로워 수를 return
-    @Transactional(readOnly = true)
-    public Long getFollowerCount(Long memberId) {
-        return followRepository.countByFromMemberId(memberId);
-    }
 }

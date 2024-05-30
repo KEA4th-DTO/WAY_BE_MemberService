@@ -1,6 +1,8 @@
 package com.dto.way.member.global.config;
 
 import feign.RequestInterceptor;
+import feign.codec.Encoder;
+import feign.form.spring.SpringFormEncoder;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,11 @@ public class FeignClientConfig {
                 }
             }
         };
+    }
+
+    @Bean
+    public Encoder feignFormEncoder() {
+        return new SpringFormEncoder();
     }
 
 }
