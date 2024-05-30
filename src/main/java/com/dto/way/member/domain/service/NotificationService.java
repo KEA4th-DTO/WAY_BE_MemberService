@@ -44,8 +44,9 @@ public class NotificationService {
         });
     }
 
-    public NotificationMessage createNotificationMessage(String sendedMember, String message) {
+    public NotificationMessage createNotificationMessage(Long memberId, String sendedMember, String message) {
         NotificationMessage notificationMessage = new NotificationMessage();
+        notificationMessage.setMemberId(memberId);
         notificationMessage.setSendedMember(sendedMember);
         notificationMessage.setMessage(message);
         notificationMessage.setCreatedAt(LocalDateTime.now());

@@ -52,7 +52,7 @@ public class FollowController {
 
         // 팔로우 알림 메세지 생성
         String message = loginNickname + "님이 회원님을 팔로우하기 시작했습니다.";
-        NotificationMessage notificationMessage = notificationService.createNotificationMessage(toMember.getNickname(), message);
+        NotificationMessage notificationMessage = notificationService.createNotificationMessage(toMember.getId(), toMember.getNickname(), message);
 
          // Kafka로 메세지 전송
          notificationService.followNotificationCreate(notificationMessage);
@@ -201,7 +201,7 @@ public class FollowController {
     }
 
     // 로그인 한 사용자가 본인의 팔로워 리스트에서 팔로워를 삭제하는 API
-    @Operation(summary = "팔로잉 삭제 API", description = "팔로워 리스트 중 삭제하고 싶은 사용자의 닉네임을 path variable에 넣어주세요.")
+    @Operation(summary = "팔로워 삭제 API", description = "팔로워 리스트 중 삭제하고 싶은 사용자의 닉네임을 path variable에 넣어주세요.")
     @DeleteMapping("/follower-list/{friendNickname}")
     public ApiResponse deleteFollower(@PathVariable("friendNickname") String nickname,
                                       HttpServletRequest request) {
