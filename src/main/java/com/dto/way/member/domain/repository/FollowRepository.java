@@ -3,9 +3,11 @@ package com.dto.way.member.domain.repository;
 import com.dto.way.member.domain.entity.Follow;
 import com.dto.way.member.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +19,10 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     List<Follow> findByToMember(Member to_member);
 
     // 로그인 한 사용자가 팔로잉을 삭제함
-    void deleteByFromMemberAndToMember(Member from_member, Member to_member);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Follow f WHERE f.fromMember = :fromMember AND f.toMember = :toMember")
+    void deleteByFromMemberAndToMember(Member fromMember, Member toMember);
 
     @Query("select f from Follow f where f.fromMember = :from and f.toMember = :to")
     Optional<Follow> findFollow(@Param("from") Member from_member, @Param("to") Member to_Member);
