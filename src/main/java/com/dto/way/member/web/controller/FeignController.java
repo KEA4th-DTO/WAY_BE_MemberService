@@ -27,6 +27,7 @@ public class FeignController {
     @GetMapping("/member-info/id/{memberId}")
     public MemberInfoResponseDTO getMemberInfoByMemberId(@PathVariable Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
+
         MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
 
         memberInfoResponseDTO.setMemberId(member.getId());

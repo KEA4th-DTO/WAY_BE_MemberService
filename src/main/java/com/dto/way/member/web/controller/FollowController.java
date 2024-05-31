@@ -126,19 +126,6 @@ public class FollowController {
         Member toMember = memberService.findMemberByNickname(nickname);
         List<MemberInfoResponseDTO> followerList = followService.followerList(toMember);
 
-//        List<FollowListResponseDTO> list = new ArrayList<>();
-//        for (int i = 0; i < followerList.size(); i++) {
-//
-//            Long memberId = followerList.get(i).getMemberId();
-//            Member memberByMemberId= memberService.findMemberByMemberId(memberId);
-//
-//            FollowListResponseDTO followListResponseDTO = new FollowListResponseDTO();
-//            followListResponseDTO.setMemberInfoResponseDTO(followerList.get(i));
-//            followListResponseDTO.setIsFollowing(followService.findStatus(loginMember, memberByMemberId));
-//
-//            list.add(followListResponseDTO);
-//        }
-
         List<FollowListResponseDTO> list = followerList.stream().map(follower -> {
             Long memberId = follower.getMemberId();
             Member memberByMemberId = memberService.findMemberByMemberId(memberId);

@@ -44,10 +44,10 @@ public class NotificationService {
         });
     }
 
-    public NotificationMessage createNotificationMessage(Long memberId, String sendedMember, String message) {
+    public NotificationMessage createNotificationMessage(Long targetMemberId, String targetMemberNickname, String message) {
         NotificationMessage notificationMessage = new NotificationMessage();
-        notificationMessage.setMemberId(memberId);
-        notificationMessage.setSendedMember(sendedMember);
+        notificationMessage.setTargetMemberId(targetMemberId);
+        notificationMessage.setTargetMemberNickname(targetMemberNickname);
         notificationMessage.setMessage(message);
         notificationMessage.setCreatedAt(LocalDateTime.now());
 

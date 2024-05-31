@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NotificationMessage {
 
-    private Long memberId;
+    private Long targetMemberId;
     private String message;
-    private String sendedMember;
+    private String targetMemberNickname;
     private LocalDateTime createdAt;
 
 }

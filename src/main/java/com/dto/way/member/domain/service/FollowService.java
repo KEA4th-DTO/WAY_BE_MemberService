@@ -86,9 +86,8 @@ public class FollowService {
     }
 
     @Transactional
-    public String cancelFollow(Member from_member, Member to_Member) {
+    public void cancelFollow(Member from_member, Member to_Member) {
         followRepository.deleteByFromMemberAndToMember(from_member, to_Member);
-        return "success";
     }
 
     // 팔로워 수를 return

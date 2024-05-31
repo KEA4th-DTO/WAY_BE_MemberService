@@ -175,7 +175,7 @@ public class MemberService {
 
     @Transactional
     public String saveTextURL(Long memberId) throws IOException {
-        String textURL = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/ai_text/text_member_id_" + memberId +".txt";
+        String textURL = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/ai_text/text_member_id_" + memberId;
 
         memberRepository.updateMemberTextUrlById(memberId, textURL);
 
