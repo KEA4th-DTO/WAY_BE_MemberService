@@ -86,8 +86,12 @@ public class MemberController {
         // 토큰 유저 정보와 닉네임 유저 정보가 같아야만 수정이 가능하다.
         if (Objects.equals(loginMemberId, profileMember.getId())) {
 
-            memberService.updateProfile(updateProfileRequestDTO, profileImage, profileMember);
-            return ApiResponse.of(_OK, null);
+            String result = memberService.updateProfile(updateProfileRequestDTO, profileImage, profileMember);
+            if (result.equals(MEMBER_NICKNAME_DUPLICATED.getCode())) {
+                return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), null);
+            } else {
+                return ApiResponse.of(MEMBER_UPDATE_PROFILE, null);
+            }
 
         } else { // 일치하지 않는다면
 
@@ -129,6 +133,7 @@ public class MemberController {
         String textUrl = memberService.saveTextURL(loginMemberId);
 
         memberService.requestWayTags(loginMemberId, imageUrl, textUrl);
+        memberService.requestRecommendUser(loginMemberId);
 
         return ApiResponse.of(_OK, null);
     }

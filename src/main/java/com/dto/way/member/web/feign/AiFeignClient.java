@@ -14,4 +14,8 @@ public interface AiFeignClient {
     List<String> getUserTags(@RequestPart("user_id") Long user_id,
                              @RequestPart("image_url") String image_url,
                              @RequestPart("text_url") String text_url);
+
+    // Long user_id 를 파라미터로 넘김
+    @PostMapping("/recommendation")
+    List<Long> getRecommendMember(@RequestPart("user_id") Long user_id);
 }

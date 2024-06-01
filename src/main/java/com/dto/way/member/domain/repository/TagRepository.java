@@ -18,8 +18,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     @Query("SELECT t.wayTag1, t.wayTag2, t.wayTag3 FROM Tag t WHERE t.taggedMember = :member")
     List<Object[]> findTagsByMember(@Param("member") Member member);
 
-
-
     @Transactional
     @Modifying
     @Query("UPDATE Tag t SET t.wayTag1 = :wayTag1, t.wayTag2 = :wayTag2, t.wayTag3 = :wayTag3 WHERE t.taggedMember.id = :memberId")

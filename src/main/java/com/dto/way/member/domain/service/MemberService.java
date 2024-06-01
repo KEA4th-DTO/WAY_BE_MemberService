@@ -3,6 +3,7 @@ package com.dto.way.member.domain.service;
 import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.entity.MemberStatus;
 import com.dto.way.member.domain.repository.MemberRepository;
+import com.dto.way.member.domain.repository.RecommendRepository;
 import com.dto.way.member.domain.repository.TagRepository;
 import com.dto.way.member.global.AmazonS3Manager;
 import com.dto.way.member.global.config.AmazonS3Config;
@@ -14,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 import static com.dto.way.member.web.dto.FeignReturnDTO.*;
 import static com.dto.way.member.web.dto.MemberRequestDTO.*;
 import static com.dto.way.member.web.dto.MemberResponseDTO.*;
+import static com.dto.way.member.web.response.code.status.ErrorStatus.*;
+import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
 
 @Slf4j
 @Service
@@ -44,6 +46,9 @@ public class MemberService {
     private final AiFeignClient aiFeignClient;
     private final AmazonS3Config amazonS3Config;
     private final AmazonS3Manager amazonS3Manager;
+    private final RecommendRepository recommendRepository;
+
+    public static final String DEFAULT_IMAGE = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/profile_image/default.jpg";
 
     // 닉네임 중복 검사 메소드
     public boolean checkNicknameDuplication(String nickname) {
@@ -140,27 +145,38 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateProfile(UpdateProfileRequestDTO updateProfileRequestDTO, MultipartFile profileImage, Member profileMember) throws IOException {
-
-        // 프로필 이미지가 이미 있다면 이미지를 삭제
-        String oldImageUrl = amazonS3Config.getProfileImagePath() + "/" + profileMember.getEmail();
-
-        if (!isDefaultProfileImage(profileMember.getProfileImageUrl())) {
-            amazonS3Manager.deleteFile(oldImageUrl);
-        }
-
-        // 이미지를 S3에 저장, 파일 이름은 email로 지정
-        String newImageUrl = amazonS3Manager.uploadFileToDirectory(amazonS3Config.getProfileImagePath(), profileMember.getEmail() + ".png", profileImage);
+    public String updateProfile(UpdateProfileRequestDTO updateProfileRequestDTO, MultipartFile profileImage, Member profileMember) throws IOException {
 
         Long memberId = profileMember.getId();
         String introduce = updateProfileRequestDTO.getIntroduce();
         String nickname = updateProfileRequestDTO.getNickname();
+        String oldImageUrl = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/" + amazonS3Config.getProfileImagePath() + "/profile_image_" + profileMember.getId() + ".png";
 
-        memberRepository.updateMemberProfile(memberId, nickname, introduce, newImageUrl);
+        boolean checked = checkNicknameDuplication(updateProfileRequestDTO.getNickname());
+        if (checked) {
+            return MEMBER_NICKNAME_DUPLICATED.getCode();
+        } else {
+            if (profileImage != null) {
+                // 프로필 이미지가 이미 있다면 이미지를 삭제
+                if (!isDefaultProfileImage(profileMember.getProfileImageUrl())) {
+                    amazonS3Manager.deleteFile(oldImageUrl);
+                }
+
+                // 이미지를 S3에 저장, 파일 이름은 email로 지정
+                String newImageUrl = amazonS3Manager.uploadFileToDirectory(amazonS3Config.getProfileImagePath(), "profile_image_"+ profileMember.getId() + ".png", profileImage);
+                memberRepository.updateMemberProfile(memberId, nickname, introduce, newImageUrl);
+
+                return MEMBER_UPDATE_PROFILE.getCode();
+
+            } else { // 프로필 이미지를 업로드 하지 않은 경우 기존 이미지를 다시 사용
+                memberRepository.updateMemberProfile(memberId, nickname, introduce, oldImageUrl);
+                return MEMBER_UPDATE_PROFILE.getCode();
+            }
+        }
     }
 
     public String saveAiImage(MultipartFile aiImage, Long memberId) throws IOException {
-        String imageUrl = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/" + amazonS3Config.getAiImagePath() + "/" + "ai_image_" + memberId + ".png";
+        String imageUrl = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/" + amazonS3Config.getAiImagePath() + "/ai_image_" + memberId + ".png";
 
         ResponseEntity<byte[]> objectByUrl = amazonS3Manager.getObjectByUrl(imageUrl);
         if (objectByUrl == null) {
@@ -202,6 +218,32 @@ public class MemberService {
         } catch (Exception e) {
             // 예외 로그
             log.error("Failed to update tags for userId: {}", userId, e);
+
+            // 예외 설정
+            future.completeExceptionally(e);
+        }
+
+        return future;
+    }
+
+    @Async
+    public CompletableFuture<String> requestRecommendUser(Long memberId) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        try {
+            // FeignClient 호출 및 응답 로그
+            List<Long> recommendMembers = aiFeignClient.getRecommendMember(memberId);
+            log.info("Received recommendMembers: {}", recommendMembers);
+
+            // Repository 업데이트 로그
+            recommendRepository.updateRecommendMemberByMemberId(memberId, recommendMembers.get(0), recommendMembers.get(1), recommendMembers.get(2));
+            log.info("RecommendMembers updated successfully for userId: {}", memberId);
+
+            // 성공 메시지 설정
+            future.complete("Recommend Members updated successfully");
+        } catch (Exception e) {
+            // 예외 로그
+            log.error("Failed to update Recommend Members for userId: {}", memberId, e);
 
             // 예외 설정
             future.completeExceptionally(e);
