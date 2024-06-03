@@ -157,7 +157,7 @@ public class FollowController {
         Member loginMember = memberService.findMemberByNickname(loginNickname);
         Member toMember = memberService.findMemberByNickname(friendNickname);
 
-        Boolean isFollowing = followService.findStatus(toMember, loginMember);
+        Boolean isFollowing = followService.findStatus(loginMember, toMember);
         IsFollowResponseDTO isFollowResponseDTO = new IsFollowResponseDTO();
         isFollowResponseDTO.setFromMember(loginMember.getId());
         isFollowResponseDTO.setToMember(toMember.getId());

@@ -133,7 +133,7 @@ public class MemberController {
         String textUrl = memberService.saveTextURL(loginMemberId);
 
         memberService.requestWayTags(loginMemberId, imageUrl, textUrl);
-        memberService.requestRecommendUser(loginMemberId);
+        // memberService.requestRecommendUser(loginMemberId);
 
         return ApiResponse.of(_OK, null);
     }
