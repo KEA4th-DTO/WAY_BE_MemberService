@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "way-be-ai", url = "http://210.109.55.124/ai-service", configuration = FeignClientConfig.class)
+@FeignClient(name = "way-be-ai", url = "${config.feign.ai-url}", configuration = FeignClientConfig.class)
 public interface AiFeignClient {
 
     @PostMapping(value = "/user_tag", consumes = "multipart/form-data")
