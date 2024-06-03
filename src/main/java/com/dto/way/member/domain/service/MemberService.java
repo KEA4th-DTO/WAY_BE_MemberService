@@ -148,12 +148,15 @@ public class MemberService {
     public String updateProfile(UpdateProfileRequestDTO updateProfileRequestDTO, MultipartFile profileImage, Member profileMember) throws IOException {
 
         Long memberId = profileMember.getId();
-        String introduce = updateProfileRequestDTO.getIntroduce();
-        String nickname = updateProfileRequestDTO.getNickname();
+        String oldNickname = profileMember.getNickname();
+
+        String newIntroduce = updateProfileRequestDTO.getIntroduce();
+        String newNickname = updateProfileRequestDTO.getNickname();
         String oldImageUrl = "https://way-bucket-s3.s3.ap-northeast-2.amazonaws.com/" + amazonS3Config.getProfileImagePath() + "/profile_image_" + profileMember.getId() + ".png";
 
         boolean checked = checkNicknameDuplication(updateProfileRequestDTO.getNickname());
-        if (checked) {
+
+        if (!oldNickname.equals(newNickname) && checked) {
             return MEMBER_NICKNAME_DUPLICATED.getCode();
         } else {
             if (profileImage != null) {
@@ -164,12 +167,12 @@ public class MemberService {
 
                 // 이미지를 S3에 저장, 파일 이름은 email로 지정
                 String newImageUrl = amazonS3Manager.uploadFileToDirectory(amazonS3Config.getProfileImagePath(), "profile_image_"+ profileMember.getId() + ".png", profileImage);
-                memberRepository.updateMemberProfile(memberId, nickname, introduce, newImageUrl);
+                memberRepository.updateMemberProfile(memberId, newNickname, newIntroduce, newImageUrl);
 
                 return MEMBER_UPDATE_PROFILE.getCode();
 
             } else { // 프로필 이미지를 업로드 하지 않은 경우 기존 이미지를 다시 사용
-                memberRepository.updateMemberProfile(memberId, nickname, introduce, oldImageUrl);
+                memberRepository.updateMemberProfile(memberId, newNickname, newIntroduce, oldImageUrl);
                 return MEMBER_UPDATE_PROFILE.getCode();
             }
         }
