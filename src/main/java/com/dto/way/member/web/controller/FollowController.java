@@ -142,7 +142,7 @@ public class FollowController {
 
     // 로그인 유저 - 조회 대상 간의 팔로잉 상태
     @Operation(summary = "팔로잉 단건 조회 API", description = "로그인 한 유저와 path variable에 넣은 유저 간의 팔로잉 상태를 조회하는 API입니다.")
-    @GetMapping("/follow-status/{friendNickName}")
+    @GetMapping("/follow-status/{friendNickname}")
     public ApiResponse<IsFollowResponseDTO> getFollowStatus(@PathVariable("friendNickname") String friendNickname,
                                                             HttpServletRequest request) {
 
