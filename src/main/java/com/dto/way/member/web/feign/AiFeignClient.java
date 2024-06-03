@@ -16,6 +16,6 @@ public interface AiFeignClient {
                              @RequestPart("text_url") String text_url);
 
     // Long user_id 를 파라미터로 넘김
-    @PostMapping("/recommendation")
+    @PostMapping(value = "/recommendation", consumes = "multipart/form-data")
     List<Long> getRecommendMember(@RequestPart("user_id") Long user_id);
 }
