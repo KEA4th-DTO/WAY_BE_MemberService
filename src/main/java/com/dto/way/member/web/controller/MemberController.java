@@ -111,7 +111,7 @@ public class MemberController {
         if (keyword == null) {
             return ApiResponse.onFailure(SEARCH_KEYWORD_NOT_NULL.getCode(), SEARCH_KEYWORD_NOT_NULL.getMessage(), null);
         } else if (result.getList().isEmpty()) {
-            return ApiResponse.onFailure(SEARCH_RESULT_NULL.getCode(), SEARCH_RESULT_NULL.getMessage(), null);
+            return ApiResponse.of(SEARCH_NO_RESULT, null);
         } else {
             return ApiResponse.of(_OK, result);
         }

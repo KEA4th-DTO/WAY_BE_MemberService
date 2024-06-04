@@ -261,6 +261,6 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Page<Member> findByNicknameContaining(Integer page, String keyword) {
-        return memberRepository.findByNicknameContaining(PageRequest.of(page, 10), keyword);
+        return memberRepository.findByNicknameContaining(PageRequest.of(page, 6), keyword);
     }
 }
