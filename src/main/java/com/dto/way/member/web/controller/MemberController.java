@@ -1,9 +1,11 @@
 package com.dto.way.member.web.controller;
 
 import com.dto.way.member.domain.entity.Member;
+import com.dto.way.member.domain.service.FollowService;
 import com.dto.way.member.domain.service.MemberService;
 import com.dto.way.member.global.JwtUtils;
 import com.dto.way.member.web.converter.SearchingResultConverter;
+import com.dto.way.member.web.dto.TagDTO;
 import com.dto.way.member.web.response.ApiResponse;
 import com.dto.way.member.web.response.code.status.SuccessStatus;
 import io.jsonwebtoken.Claims;
@@ -21,8 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static com.dto.way.member.web.converter.SearchingResultConverter.*;
 import static com.dto.way.member.web.dto.MemberRequestDTO.*;
@@ -38,6 +42,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final JwtUtils jwtUtils;
+    private final FollowService followService;
 
     @Operation(summary = "프로필 조회 API", description = "path variable의 닉네임과 토큰 닉네임이 일치하면 isMyProfile이 true, 일치하지 않으면 false가 반환됩니다.")
     @GetMapping("/profile/{nickname}")
@@ -108,6 +113,42 @@ public class MemberController {
         }
     }
 
+    @Operation(summary = "추천 유저 조회 API", description = "사용자에게 추천 유저 3명의 정보를 넘겨줍니다.")
+    @GetMapping("/search/recommend")
+    public ApiResponse<List<RecommendResponseDTO>> searchRecommend(HttpServletRequest request) {
+
+        // 토큰에서 요청 유저 정보 추출
+        String token = jwtUtils.resolveToken(request);
+        Claims claims = jwtUtils.parseClaims(token);
+
+        Long loginMemberId = claims.get("memberId", Long.class);
+        log.info("loginMemberId " + claims.get("memberId"));
+
+        // 닉네임으로 프로필 조회 대상 멤버 정보를 가져옴
+        Member loginMember = memberService.findMemberByMemberId(loginMemberId);
+
+        List<Long> recommends = memberService.getAllMemberIdsByMember(loginMember);
+
+        log.info("recommends = {}", recommends);
+        if (recommends.isEmpty()) {
+            return ApiResponse.of(MEMBER_NO_RECOMMEND, null);
+        } else {
+
+            List<RecommendResponseDTO> result = recommends.stream()
+                    .limit(3)
+                    .map(recommendMemberId -> {
+                        Member recommendMember = memberService.findMemberByMemberId(recommendMemberId);
+                        Boolean isFollowing = followService.findStatus(loginMember, recommendMember);
+                        List<String> tags = memberService.getTagStringsByMember(recommendMember);
+                        return toRecommendResponseDTO(recommendMember, tags, isFollowing);
+                    })
+                    .toList();
+
+            return ApiResponse.of(MEMBER_CREATE_RECOMMEND, result);
+        }
+    }
+
+
     @Operation(summary = "AI서비스 호출 API", description = "사용자의 마이맵 이미지를 넘기면 사용자 AI 분석이 업데이트 됩니다.")
     @PostMapping(value = "/mymap-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse saveMymapImage(HttpServletRequest request,
@@ -131,14 +172,6 @@ public class MemberController {
 
 
     // 비밀번호 재설정
-//    @PostMapping("/change/password")
-//    public ApiResponse changePassword(@RequestBody ChangePasswordRequestDTO changePasswordRequestDTO,
-//                                      HttpServletRequest request) {
-//
-//
-//
-//        return ApiResponse.of(_OK, null);
-//    }
 
     // 전화번호 인증을 통한 이메일 찾기
 

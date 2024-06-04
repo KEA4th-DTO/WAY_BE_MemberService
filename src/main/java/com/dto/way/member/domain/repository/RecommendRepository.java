@@ -5,6 +5,7 @@ import com.dto.way.member.domain.entity.Recommend;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +14,14 @@ import java.util.List;
 @Repository
 public interface RecommendRepository extends JpaRepository<Recommend, Long> {
 
-    @Query("SELECT r FROM Recommend r WHERE r.recommendedMember = :member")
-    List<String> findByMember(Member member);
+    @Query("SELECT r.memberId1 FROM Recommend r WHERE r.recommendedMember = :member")
+    List<Long> findMemberId1ByMember(@Param("member") Member member);
+
+    @Query("SELECT r.memberId2 FROM Recommend r WHERE r.recommendedMember = :member")
+    List<Long> findMemberId2ByMember(@Param("member") Member member);
+
+    @Query("SELECT r.memberId3 FROM Recommend r WHERE r.recommendedMember = :member")
+    List<Long> findMemberId3ByMember(@Param("member") Member member);
 
     @Transactional
     @Modifying
