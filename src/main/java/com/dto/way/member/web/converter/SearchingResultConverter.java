@@ -1,6 +1,8 @@
 package com.dto.way.member.web.converter;
 
 import com.dto.way.member.domain.entity.Member;
+import com.dto.way.member.domain.entity.Recommend;
+import com.dto.way.member.web.dto.RecommendDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -26,8 +28,20 @@ public class SearchingResultConverter {
                 .list(memberSearchResultDtoList)
                 .isFirst(memberPage.isFirst())
                 .isLast(memberPage.isLast())
+                .totalElements(memberPage.getTotalElements())
                 .totalPage(memberPage.getTotalPages())
                 .listSize(memberPage.getSize())
+                .build();
+    }
+
+    public static RecommendResponseDTO toRecommendResponseDTO(Member recommendMember, List<String> tags, boolean isFollowing) {
+        return RecommendResponseDTO.builder()
+                .name(recommendMember.getName())
+                .nickname(recommendMember.getNickname())
+                .profileImageUrl(recommendMember.getProfileImageUrl())
+                .introduce(recommendMember.getIntroduce())
+                .isFollowing(isFollowing)
+                .tags(tags)
                 .build();
     }
 }

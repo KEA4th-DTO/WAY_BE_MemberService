@@ -70,7 +70,6 @@ public class MemberResponseDTO {
         private String profileImageUrl;
         private String nickname;
         private String introduce;
-
     }
 
     @Getter
@@ -86,6 +85,20 @@ public class MemberResponseDTO {
         private Boolean isFirst;
         private Boolean isLast;
 
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RecommendResponseDTO {
+
+        private String name;
+        private String nickname;
+        private String profileImageUrl;
+        private String introduce;
+        private boolean isFollowing;
+        private List<String> tags;
     }
 }
 

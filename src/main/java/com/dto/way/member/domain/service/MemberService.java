@@ -229,30 +229,13 @@ public class MemberService {
         return future;
     }
 
-    @Async
-    public CompletableFuture<String> requestRecommendUser(Long memberId) {
-        CompletableFuture<String> future = new CompletableFuture<>();
-
-        try {
-            // FeignClient 호출 및 응답 로그
-            List<Long> recommendMembers = aiFeignClient.getRecommendMember(memberId);
-            log.info("Received recommendMembers: {}", recommendMembers);
-
-            // Repository 업데이트 로그
-            recommendRepository.updateRecommendMemberByMemberId(memberId, recommendMembers.get(0), recommendMembers.get(1), recommendMembers.get(2));
-            log.info("RecommendMembers updated successfully for userId: {}", memberId);
-
-            // 성공 메시지 설정
-            future.complete("Recommend Members updated successfully");
-        } catch (Exception e) {
-            // 예외 로그
-            log.error("Failed to update Recommend Members for userId: {}", memberId, e);
-
-            // 예외 설정
-            future.completeExceptionally(e);
-        }
-
-        return future;
+    @Transactional(readOnly = true)
+    public List<Long> getAllMemberIdsByMember(Member member) {
+        List<Long> memberIds = new ArrayList<>();
+        memberIds.addAll(recommendRepository.findMemberId1ByMember(member));
+        memberIds.addAll(recommendRepository.findMemberId2ByMember(member));
+        memberIds.addAll(recommendRepository.findMemberId3ByMember(member));
+        return memberIds;
     }
 
     public boolean isDefaultProfileImage(String profileImageUrl) {
@@ -261,6 +244,6 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Page<Member> findByNicknameContaining(Integer page, String keyword) {
-        return memberRepository.findByNicknameContaining(PageRequest.of(page, 6), keyword);
+        return memberRepository.findByNicknameContaining(PageRequest.of(page, 8), keyword);
     }
 }

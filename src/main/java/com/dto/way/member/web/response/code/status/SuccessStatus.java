@@ -22,7 +22,12 @@ public enum SuccessStatus implements BaseCode {
     MEMBER_LOGIN(HttpStatus.OK, "MEMBER2006", "로그인 성공"),
     MEMBER_LOGOUT(HttpStatus.OK, "MEMBER2007", "로그아웃 성공"),
     MEMBER_UPDATE_PROFILE(HttpStatus.OK, "MEMBER2008", "프로필 수정 성공"),
+    MEMBER_NO_RECOMMEND(HttpStatus.OK, "MEMBER2009", "아직 추천 유저가 생성되지 않았습니다."),
+    MEMBER_CREATE_RECOMMEND(HttpStatus.OK, "MEMBER20010", "추천 유저를 생성했습니다."),
+
+
     SEARCH_NO_RESULT(HttpStatus.OK, "SEARCH2001", "해당 키워드로 검색한 결과가 없습니다."),
+
 
     // 팔로우 관련 응답
     FOLLOW_SUCCESS(HttpStatus.OK, "FOLLOW2001", "팔로잉 성공"),
