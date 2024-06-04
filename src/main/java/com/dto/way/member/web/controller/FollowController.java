@@ -169,7 +169,7 @@ public class FollowController {
     // 로그인 한 사용자가 본인의 팔로잉 리스트에서 팔로잉을 삭제하는 API
     @Operation(summary = "팔로잉 삭제 API", description = "팔로잉 리스트 중 삭제하고 싶은 사용자의 닉네임을 path variable에 넣어주세요.")
     @DeleteMapping("/following-list/{friendNickname}")
-    public ApiResponse deleteFollowing(@PathVariable("friendNickname") String nickname,
+    public ApiResponse deleteFollowing(@PathVariable("friendNickname") String friendNickname,
                                        HttpServletRequest request) {
 
         // 토큰에서 요청 유저 정보 추출
@@ -181,7 +181,7 @@ public class FollowController {
 
         // 닉네임으로 로그인한 유저 정보를 가져옴.
         Member loginMember = memberService.findMemberByNickname(loginNickname);
-        Member to_member = memberService.findMemberByNickname(nickname);
+        Member to_member = memberService.findMemberByNickname(friendNickname);
         followService.cancelFollow(loginMember, to_member);
 
         return ApiResponse.of(_OK, null);
@@ -190,7 +190,7 @@ public class FollowController {
     // 로그인 한 사용자가 본인의 팔로워 리스트에서 팔로워를 삭제하는 API
     @Operation(summary = "팔로워 삭제 API", description = "팔로워 리스트 중 삭제하고 싶은 사용자의 닉네임을 path variable에 넣어주세요.")
     @DeleteMapping("/follower-list/{friendNickname}")
-    public ApiResponse deleteFollower(@PathVariable("friendNickname") String nickname,
+    public ApiResponse deleteFollower(@PathVariable("friendNickname") String friendNickname,
                                       HttpServletRequest request) {
 
         // 토큰에서 요청 유저 정보 추출
@@ -202,7 +202,7 @@ public class FollowController {
 
         // 닉네임으로 프로필 조회 대상 멤버 정보를 가져옴
         Member loginMember = memberService.findMemberByNickname(loginNickname);
-        Member from_member = memberService.findMemberByNickname(nickname);
+        Member from_member = memberService.findMemberByNickname(friendNickname);
         followService.cancelFollow(from_member, loginMember);
 
         return ApiResponse.of(_OK, null);
