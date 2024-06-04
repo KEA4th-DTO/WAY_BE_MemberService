@@ -67,9 +67,8 @@ public class MemberController {
     }
 
     @Operation(summary = "프로필 수정 API", description = "path variable의 닉네임과 토큰 닉네임이 일치해야만 수정이 가능합니다.")
-    @PostMapping(value = "/profile/{nickname}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/profile/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse updateProfile(HttpServletRequest request,
-                                     @PathVariable String nickname,
                                      @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
                                      @Valid @RequestPart(value = "updateProfileRequestDTO") UpdateProfileRequestDTO updateProfileRequestDTO) throws IOException {
 
@@ -81,21 +80,13 @@ public class MemberController {
         log.info("loginMemberId " + claims.get("memberId"));
 
         // 닉네임으로 프로필 조회 대상 멤버 정보를 가져옴
-        Member profileMember = memberService.findMemberByNickname(nickname);
+        Member profileMember = memberService.findMemberByMemberId(loginMemberId);
 
-        // 토큰 유저 정보와 닉네임 유저 정보가 같아야만 수정이 가능하다.
-        if (Objects.equals(loginMemberId, profileMember.getId())) {
-
-            String result = memberService.updateProfile(updateProfileRequestDTO, profileImage, profileMember);
-            if (result.equals(MEMBER_NICKNAME_DUPLICATED.getCode())) {
-                return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), null);
-            } else {
-                return ApiResponse.of(MEMBER_UPDATE_PROFILE, null);
-            }
-
-        } else { // 일치하지 않는다면
-
-            return ApiResponse.onFailure(MEMBER_UPDATE_FAILED.getCode(), MEMBER_UPDATE_FAILED.getMessage(), null);
+        String result = memberService.updateProfile(updateProfileRequestDTO, profileImage, profileMember);
+        if (result.equals(MEMBER_NICKNAME_DUPLICATED.getCode())) {
+            return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), null);
+        } else {
+            return ApiResponse.of(MEMBER_UPDATE_PROFILE, null);
         }
 
     }
