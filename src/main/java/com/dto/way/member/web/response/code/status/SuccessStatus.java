@@ -21,9 +21,10 @@ public enum SuccessStatus implements BaseCode {
     MEMBER_SIGNUP(HttpStatus.OK, "MEMBER2005", "회원가입 성공"),
     MEMBER_LOGIN(HttpStatus.OK, "MEMBER2006", "로그인 성공"),
     MEMBER_LOGOUT(HttpStatus.OK, "MEMBER2007", "로그아웃 성공"),
-    MEMBER_UPDATE_PROFILE(HttpStatus.OK, "MEMBER2008", "프로필 수정 성공"),
-    MEMBER_NO_RECOMMEND(HttpStatus.OK, "MEMBER2009", "아직 추천 유저가 생성되지 않았습니다."),
-    MEMBER_CREATE_RECOMMEND(HttpStatus.OK, "MEMBER20010", "추천 유저를 생성했습니다."),
+    MEMBER_FOUND_PROFILE(HttpStatus.OK, "MEMBER2008", "프로필 조회 성공"),
+    MEMBER_UPDATE_PROFILE(HttpStatus.OK, "MEMBER2009", "프로필 수정 성공"),
+    MEMBER_NO_RECOMMEND(HttpStatus.OK, "MEMBER20010", "아직 추천 유저가 생성되지 않았습니다."),
+    MEMBER_CREATE_RECOMMEND(HttpStatus.OK, "MEMBER20011", "추천 유저를 생성했습니다."),
 
 
     SEARCH_NO_RESULT(HttpStatus.OK, "SEARCH2001", "해당 키워드로 검색한 결과가 없습니다."),
@@ -31,6 +32,11 @@ public enum SuccessStatus implements BaseCode {
 
     // 팔로우 관련 응답
     FOLLOW_SUCCESS(HttpStatus.OK, "FOLLOW2001", "팔로잉 성공"),
+    FOLLOW_FOUND_FOLLOWINGLIST(HttpStatus.OK, "FOLLOW2002", "팔로잉 리스트 조회에 성공했습니다."),
+    FOLLOW_FOUND_FOLLOWERLIST(HttpStatus.OK, "FOLLOW2003", "팔로워 리스트 조회에 성공했습니다."),
+    FOLLOW_FOUND_FOLLOWONE(HttpStatus.OK, "FOLLOW2004", "팔로잉 단건 조회에 성공했습니다."),
+    FOLLOW_DELETE_FOLLOWING(HttpStatus.OK, "FOLLOW2005", "팔로잉 삭제를 성공했습니다."),
+    FOLLOW_DELETE_FOLLOWER(HttpStatus.OK, "FOLLOW2006", "팔로워 삭제를 성공했습니다."),
 
     //  게시글 관련 응답
     DAILY_CREATED(HttpStatus.OK, "DAILY2001", "Daily 게시글이 생성되었습니다."),

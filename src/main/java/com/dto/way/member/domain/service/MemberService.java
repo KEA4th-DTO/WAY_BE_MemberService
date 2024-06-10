@@ -7,6 +7,7 @@ import com.dto.way.member.domain.repository.RecommendRepository;
 import com.dto.way.member.domain.repository.TagRepository;
 import com.dto.way.member.global.AmazonS3Manager;
 import com.dto.way.member.global.config.AmazonS3Config;
+import com.dto.way.member.web.converter.FeignConverter;
 import com.dto.way.member.web.dto.TagDTO;
 import com.dto.way.member.web.dto.UserTagRequestDTO;
 import com.dto.way.member.web.feign.AiFeignClient;
@@ -28,6 +29,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import static com.dto.way.member.web.converter.FeignConverter.toMemberInfoResponseDTO;
 import static com.dto.way.member.web.dto.FeignReturnDTO.*;
 import static com.dto.way.member.web.dto.MemberRequestDTO.*;
 import static com.dto.way.member.web.dto.MemberResponseDTO.*;
@@ -77,20 +79,11 @@ public class MemberService {
         List<Member> memberList = memberRepository.findByMemberStatus(memberStatus);
 
         return memberList.stream()
-                .map(member -> {
-                    MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
-                    memberInfoResponseDTO.setMemberId(member.getId());
-                    memberInfoResponseDTO.setName(member.getName());
-                    memberInfoResponseDTO.setNickname(member.getNickname());
-                    memberInfoResponseDTO.setProfileImageUrl(member.getProfileImageUrl());
-                    memberInfoResponseDTO.setIntroduce(member.getIntroduce());
-                    memberInfoResponseDTO.setMemberStatus(member.getMemberStatus());
-                    memberInfoResponseDTO.setPhoneNumber(member.getPhoneNumber());
-                    return memberInfoResponseDTO;
-                })
+                .map(FeignConverter::toMemberInfoResponseDTO)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<TagDTO> getTagsByMember(Member member) {
         List<Object[]> tagObjects = tagRepository.findTagsByMember(member);
         return tagObjects.stream()
@@ -98,6 +91,7 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<String> getTagStringsByMember(Member member) {
         List<TagDTO> tagsByMember = getTagsByMember(member);
         List<String> tagStrings = new ArrayList<>();

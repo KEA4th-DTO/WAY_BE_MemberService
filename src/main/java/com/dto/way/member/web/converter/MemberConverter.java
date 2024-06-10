@@ -1,8 +1,6 @@
 package com.dto.way.member.web.converter;
 
 import com.dto.way.member.domain.entity.Member;
-import com.dto.way.member.domain.entity.Recommend;
-import com.dto.way.member.web.dto.RecommendDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -10,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static com.dto.way.member.web.dto.MemberResponseDTO.*;
 
-public class SearchingResultConverter {
+public class MemberConverter {
 
     public static MemberSearchResultDTO toMemberSearchResultDTO(Member member) {
         return MemberSearchResultDTO.builder()
@@ -22,7 +20,7 @@ public class SearchingResultConverter {
 
     public static MemberSearchResultListDTO toMemberSearchResultListDTO(Page<Member> memberPage) {
         List<MemberSearchResultDTO> memberSearchResultDtoList = memberPage.stream()
-                .map(SearchingResultConverter::toMemberSearchResultDTO).collect(Collectors.toList());
+                .map(MemberConverter::toMemberSearchResultDTO).collect(Collectors.toList());
 
         return MemberSearchResultListDTO.builder()
                 .list(memberSearchResultDtoList)

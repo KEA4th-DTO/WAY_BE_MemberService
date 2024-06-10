@@ -24,6 +24,7 @@ public class MemberResponseDTO {
 
     @Getter
     @Setter
+    @Builder
     public static class MemberInfoResponseDTO {
         private Long memberId;
         private String name;

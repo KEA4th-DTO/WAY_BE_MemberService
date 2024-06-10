@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.dto.way.member.web.converter.FeignConverter.toMemberInfoResponseDTO;
 import static com.dto.way.member.web.dto.MemberResponseDTO.*;
 
 @Slf4j
@@ -28,34 +29,15 @@ public class FeignController {
     public MemberInfoResponseDTO getMemberInfoByMemberId(@PathVariable Long memberId) {
         Member member = memberService.findMemberByMemberId(memberId);
 
-        MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
-
-        memberInfoResponseDTO.setMemberId(member.getId());
-        memberInfoResponseDTO.setName(member.getName());
-        memberInfoResponseDTO.setNickname(member.getNickname());
-        memberInfoResponseDTO.setMemberStatus(member.getMemberStatus());
-        memberInfoResponseDTO.setPhoneNumber(member.getPhoneNumber());
-        memberInfoResponseDTO.setIntroduce(member.getIntroduce());
-        memberInfoResponseDTO.setProfileImageUrl(member.getProfileImageUrl());
-
-        return memberInfoResponseDTO;
+        return toMemberInfoResponseDTO(member);
     }
 
     @Operation(summary = "멤버정보 조회 API", description = "(프론트 사용 X) path variable에 조회하고 싶은 멤버의 nickname을 넣어주세요.")
     @GetMapping("/member-info/nickname/{nickname}")
     public MemberInfoResponseDTO getMemberInfoByNickName(@PathVariable String nickname) {
         Member member = memberService.findMemberByNickname(nickname);
-        MemberInfoResponseDTO memberInfoResponseDTO = new MemberInfoResponseDTO();
 
-        memberInfoResponseDTO.setMemberId(member.getId());
-        memberInfoResponseDTO.setName(member.getName());
-        memberInfoResponseDTO.setNickname(member.getNickname());
-        memberInfoResponseDTO.setMemberStatus(member.getMemberStatus());
-        memberInfoResponseDTO.setPhoneNumber(member.getPhoneNumber());
-        memberInfoResponseDTO.setIntroduce(member.getIntroduce());
-        memberInfoResponseDTO.setProfileImageUrl(member.getProfileImageUrl());
-
-        return memberInfoResponseDTO;
+        return toMemberInfoResponseDTO(member);
     }
 
     @Operation(summary = "memberStatus로 멤버목록을 조회하는 API", description = "(프론트 사용 X) path variable에 memberStatus를 넣어주세요.")

@@ -1,5 +1,6 @@
 package com.dto.way.member.web.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class FollowResponseDTO {
 
     @Getter
     @Setter
+    @Builder
     public static class IsFollowResponseDTO {
         private Long fromMember;
         private Long toMember;

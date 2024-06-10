@@ -4,10 +4,7 @@ import com.dto.way.member.domain.entity.Member;
 import com.dto.way.member.domain.service.FollowService;
 import com.dto.way.member.domain.service.MemberService;
 import com.dto.way.member.global.JwtUtils;
-import com.dto.way.member.web.converter.SearchingResultConverter;
-import com.dto.way.member.web.dto.TagDTO;
 import com.dto.way.member.web.response.ApiResponse;
-import com.dto.way.member.web.response.code.status.SuccessStatus;
 import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,20 +12,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
-import static com.dto.way.member.web.converter.SearchingResultConverter.*;
+import static com.dto.way.member.web.converter.MemberConverter.*;
 import static com.dto.way.member.web.dto.MemberRequestDTO.*;
 import static com.dto.way.member.web.dto.MemberResponseDTO.*;
 import static com.dto.way.member.web.response.code.status.SuccessStatus.*;
@@ -49,24 +40,19 @@ public class MemberController {
     public ApiResponse<GetProfileResponseDTO> getProfile(@PathVariable(value = "nickname") String nickname,
                                                          HttpServletRequest request) {
 
-        // 토큰에서 요청 유저 정보 추출
-        String token = jwtUtils.resolveToken(request);
-        Claims claims = jwtUtils.parseClaims(token);
+        // 현재 로그인 한 유저의 닉네임
+        String loginMemberNickname = getMemberNicknameByRequest(request);
 
-        String loginNickname = claims.get("nickname", String.class);
-        log.info("member Nickname: " + claims.get("nickname", String.class));
-
-        // 닉네임으로 프로필 조회 대상 멤버 정보를 가져옴
         Member profileMember = memberService.findMemberByNickname(nickname);
 
-        if (loginNickname.equals(profileMember.getNickname())) { // 본인 프로필 조회인 경우
+        if (loginMemberNickname.equals(profileMember.getNickname())) { // 본인 프로필 조회인 경우
 
             GetProfileResponseDTO profile = memberService.createProfile(profileMember, true);
-            return ApiResponse.of(_OK, profile);
+            return ApiResponse.of(MEMBER_FOUND_PROFILE, profile);
         } else { // 남의 프로필 조회인 경우
 
             GetProfileResponseDTO profile = memberService.createProfile(profileMember, false);
-            return ApiResponse.of(_OK, profile);
+            return ApiResponse.of(MEMBER_FOUND_PROFILE, profile);
         }
 
     }
@@ -77,18 +63,14 @@ public class MemberController {
                                      @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
                                      @Valid @RequestPart(value = "updateProfileRequestDTO") UpdateProfileRequestDTO updateProfileRequestDTO) throws IOException {
 
-        // 토큰에서 요청 유저 정보 추출
-        String token = jwtUtils.resolveToken(request);
-        Claims claims = jwtUtils.parseClaims(token);
-
-        Long loginMemberId = claims.get("memberId", Long.class);
-        log.info("loginMemberId " + claims.get("memberId"));
+        // 현재 로그인 한 유저의 id
+        Long loginMemberId = getMemberIdByRequest(request);
 
         // 닉네임으로 프로필 조회 대상 멤버 정보를 가져옴
         Member profileMember = memberService.findMemberByMemberId(loginMemberId);
 
         String result = memberService.updateProfile(updateProfileRequestDTO, profileImage, profileMember);
-        if (result.equals(MEMBER_NICKNAME_DUPLICATED.getCode())) {
+        if (result.equals(MEMBER_NICKNAME_DUPLICATED.getCode())) { // 수정하려는 닉네임이 이미 사용 중인 경우
             return ApiResponse.onFailure(MEMBER_NICKNAME_DUPLICATED.getCode(), MEMBER_NICKNAME_DUPLICATED.getMessage(), null);
         } else {
             return ApiResponse.of(MEMBER_UPDATE_PROFILE, null);
@@ -101,12 +83,13 @@ public class MemberController {
     public ApiResponse<MemberSearchResultListDTO> searchNickname(@RequestParam(name = "keyword") String keyword,
                                                                  @RequestParam(name = "page") Integer page) {
 
+        // 키워드 검색 결과를 페이징
         Page<Member> memberPage = memberService.findByNicknameContaining(page - 1, keyword);
         MemberSearchResultListDTO result = toMemberSearchResultListDTO(memberPage);
 
-        if (keyword == null) {
+        if (keyword == null) { // 키워드가 없는 경우
             return ApiResponse.onFailure(SEARCH_KEYWORD_NOT_NULL.getCode(), SEARCH_KEYWORD_NOT_NULL.getMessage(), null);
-        } else if (result.getList().isEmpty()) {
+        } else if (result.getList().isEmpty()) { // 조회 결과가 없는 경우
             return ApiResponse.of(SEARCH_NO_RESULT, null);
         } else {
             return ApiResponse.of(_OK, result);
@@ -117,23 +100,18 @@ public class MemberController {
     @GetMapping("/search/recommend")
     public ApiResponse<List<RecommendResponseDTO>> searchRecommend(HttpServletRequest request) {
 
-        // 토큰에서 요청 유저 정보 추출
-        String token = jwtUtils.resolveToken(request);
-        Claims claims = jwtUtils.parseClaims(token);
+        // 현재 로그인 한 유저의 id
+        Long loginMemberId = getMemberIdByRequest(request);
 
-        Long loginMemberId = claims.get("memberId", Long.class);
-        log.info("loginMemberId " + claims.get("memberId"));
-
-        // 닉네임으로 프로필 조회 대상 멤버 정보를 가져옴
         Member loginMember = memberService.findMemberByMemberId(loginMemberId);
 
+        // 로그인한 유저의 추천 유저를 불러옴
         List<Long> recommends = memberService.getAllMemberIdsByMember(loginMember);
 
         log.info("recommends = {}", recommends);
-        if (recommends.isEmpty()) {
+        if (recommends.isEmpty()) { // 추천 유저가 아직 생성되지 않은 경우
             return ApiResponse.of(MEMBER_NO_RECOMMEND, null);
         } else {
-
             List<RecommendResponseDTO> result = recommends.stream()
                     .limit(3)
                     .map(recommendMemberId -> {
@@ -154,12 +132,8 @@ public class MemberController {
     public ApiResponse saveMymapImage(HttpServletRequest request,
                                       @RequestPart(value = "myMapImage") MultipartFile myMapImage) throws IOException {
 
-        // 토큰에서 요청 유저 정보 추출
-        String token = jwtUtils.resolveToken(request);
-        Claims claims = jwtUtils.parseClaims(token);
-
-        Long loginMemberId = claims.get("memberId", Long.class);
-        log.info("loginMemberId " + claims.get("memberId"));
+        // 토큰에서 로그인 한 id 가져옴
+        Long loginMemberId = getMemberIdByRequest(request);
 
         String imageUrl = memberService.saveAiImage(myMapImage, loginMemberId);
         String textUrl = memberService.saveTextURL(loginMemberId);
@@ -170,6 +144,29 @@ public class MemberController {
         return ApiResponse.of(_OK, null);
     }
 
+    // request에서 토큰을 뽑고 토큰에서 로그인 한 nickname 추출
+    private String getMemberNicknameByRequest(HttpServletRequest request) {
+
+        String token = jwtUtils.resolveToken(request);
+        Claims claims = jwtUtils.parseClaims(token);
+
+        String loginMemberNickname = claims.get("nickname", String.class);
+        log.info("member Nickname: " + claims.get("nickname", String.class));
+
+        return loginMemberNickname;
+    }
+
+    // request에서 토큰을 뽑고 토큰에서 로그인 한 id 추출
+    private Long getMemberIdByRequest(HttpServletRequest request) {
+
+        String token = jwtUtils.resolveToken(request);
+        Claims claims = jwtUtils.parseClaims(token);
+
+        Long loginMemberId = claims.get("memberId", Long.class);
+        log.info("loginMemberId " + claims.get("memberId"));
+
+        return loginMemberId;
+    }
 
     // 비밀번호 재설정
 

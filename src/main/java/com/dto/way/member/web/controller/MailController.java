@@ -32,16 +32,4 @@ public class MailController {
         return ApiResponse.of(EMAIL_SENDED, null);
     }
 
-//    @Operation(summary = "이메일 인증 메일 확인 API", description = "사용자가 인증 메일로 이 API의 URL을 받게됩니다. URL 접속을 하면 인증에 성공합니다.")
-//    @GetMapping("/verify")
-//    public ApiResponse verifyEmail(@RequestParam String email,
-//                                     @RequestParam String certificationNumber) {
-//
-//        if (mailSendService.verifyEmail(email, certificationNumber)) {
-//            return ApiResponse.of(EMAIL_VERIFIED, null);
-//        } else {
-//            return ApiResponse.onFailure(EMAIL_NOT_VERIFIED.getCode(), EMAIL_NOT_VERIFIED.getMessage(), null);
-//        }
-//
-//    }
 }
