@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.dto.way.member.MemberServiceTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2024-06-12T09:09:18" hostname="DESKTOP-N0LCKCJ" time="1.191">
+  <properties/>
+  <testcase name="멤버의 태그 문자열로 찾기 테스트" classname="com.dto.way.member.MemberServiceTest" time="1.075"/>
+  <testcase name="텍스트 URL 저장 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.005"/>
+  <testcase name="AI 이미지 저장 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.045"/>
+  <testcase name="멤버 상태로 멤버 찾기 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.01"/>
+  <testcase name="이메일 중복 체크 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.003"/>
+  <testcase name="닉네임 중복 체크 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.004"/>
+  <testcase name="닉네임 포함 검색 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.017"/>
+  <testcase name="멤버 ID로 멤버 찾기 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.006"/>
+  <testcase name="멤버의 모든 ID 찾기 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.008"/>
+  <testcase name="멤버의 태그 찾기 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.004"/>
+  <testcase name="닉네임으로 멤버 찾기 테스트" classname="com.dto.way.member.MemberServiceTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
